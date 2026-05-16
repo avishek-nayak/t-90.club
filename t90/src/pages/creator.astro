@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Meet the Creator — t90.club" description="The person behind t90.club.">
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="eyebrow">Meet the Creator</div>
+      <h1>Hi, I'm <span class="placeholder">[Name]</span>.</h1>
+      <p class="lede muted">A solo builder making the tool I wished existed when I was training.</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container-narrow prose-long">
+      <div class="bio-grid">
+        <div class="bio-photo">
+          <div class="photo-placeholder">[ photo ]</div>
+        </div>
+        <div>
+          <h2>Who I am</h2>
+          <p class="placeholder">[Placeholder] One paragraph: who you are, what you do, what sport(s) you train.</p>
+
+          <h2>Why I built this</h2>
+          <p class="placeholder">[Placeholder] One paragraph: the story behind starting t90.club.</p>
+
+          <h2>What I'm not</h2>
+          <p class="placeholder">[Placeholder] What you're not (a doctor, a registered dietitian, a coach, etc.) — and what that means for how to use the tools here.</p>
+
+          <h2>Find me</h2>
+          <ul class="links">
+            <li><span class="placeholder">[link]</span> — email</li>
+            <li><span class="placeholder">[link]</span> — twitter / x</li>
+            <li><span class="placeholder">[link]</span> — strava</li>
+            <li><span class="placeholder">[link]</span> — github</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head { padding: var(--s-9) 0 var(--s-7); border-bottom: 1px solid var(--line); }
+  .lede { font-size: 1.1rem; max-width: 580px; margin-top: var(--s-4); }
+
+  .bio-grid {
+    display: grid; grid-template-columns: 220px 1fr;
+    gap: var(--s-7); align-items: start;
+  }
+  @media (max-width: 720px) { .bio-grid { grid-template-columns: 1fr; gap: var(--s-5); } }
+
+  .photo-placeholder {
+    aspect-ratio: 1 / 1.1;
+    border: 1px dashed var(--line-2);
+    border-radius: var(--radius-lg);
+    background: var(--canvas-2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+  }
+
+  .prose-long h2 { margin-top: var(--s-6); margin-bottom: var(--s-2); font-size: 1.2rem; }
+  .prose-long h2:first-child { margin-top: 0; }
+  .prose-long p, .prose-long li { font-size: 1rem; color: var(--ink-2); }
+  .links { padding-left: 1.1rem; }
+  .links li { margin-bottom: 4px; }
+
+  .placeholder {
+    background: var(--accent-soft);
+    color: #8a3a17;
+    padding: 2px 6px; border-radius: 3px;
+    font-style: italic;
+  }
+</style>

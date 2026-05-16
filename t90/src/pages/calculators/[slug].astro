@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import { allCalcs } from '../../lib/catalog.js';
+
+export function getStaticPaths() {
+  // Only generate stub pages for non-live calculators.
+  // Static routes (daily-fuel.astro, race-predictor.astro, etc.) take precedence over this dynamic route.
+  return allCalcs
+    .filter((c) => c.status !== 'live')
+    .map((c) => ({ params: { slug: c.slug }, props: { calc: c } }));
+}
+
+const { calc } = Astro.props;
+---
+<Base title={`${calc.name} — t90.club`} description={calc.desc}>
+  <section class="calc-page-head">
+    <div class="container-narrow">
+      <a href="/calculators" class="calc-back">← All calculators</a>
+      <div class="eyebrow">{calc.category}</div>
+      <h1>{calc.name}</h1>
+      <p class="calc-lede">{calc.desc}</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container-narrow">
+      <div class="soon-card">
+        <div class="soon-badge mono">In the build queue</div>
+        <h2>Not built yet.</h2>
+        <p>
+          This calculator is part of the v1 roadmap and will land here once the formula
+          and chart are dialled in. The page exists so the route works, so links don't
+          break, and so you know it's coming.
+        </p>
+        <p class="muted">
+          In the meantime, the calculators marked <span class="status live">Live</span> are
+          ready to use — try them from the hub.
+        </p>
+        <a href="/calculators" class="btn">← Back to all calculators</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .soon-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--canvas-2);
+    padding: var(--s-7);
+    text-align: left;
+  }
+  .soon-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--canvas);
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    margin-bottom: var(--s-5);
+  }
+  .soon-card h2 { margin-bottom: var(--s-4); }
+  .soon-card p { font-size: 1.02rem; max-width: 580px; }
+  .soon-card .btn { margin-top: var(--s-5); }
+
+  .status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 0.08em;
+    padding: 2px 6px; border-radius: 4px;
+    text-transform: uppercase;
+    color: var(--good);
+    border: 1px solid color-mix(in oklab, var(--good) 30%, var(--line));
+    background: color-mix(in oklab, var(--good) 6%, var(--canvas-2));
+  }
+</style>

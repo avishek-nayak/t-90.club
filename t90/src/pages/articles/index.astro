@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Placeholder article slots — structure only.
+const drafts = [
+  { topic: 'Sports nutrition', title: 'Carbs per hour: what the research actually says', read: '6 min', tag: 'fueling' },
+  { topic: 'Sports nutrition', title: 'Sodium loss in long sessions — why generic numbers fail', read: '5 min', tag: 'hydration' },
+  { topic: 'Sports nutrition', title: 'Protein timing for the endurance athlete', read: '4 min', tag: 'recovery' },
+  { topic: 'Sports nutrition', title: 'Train low, race high — explained without dogma', read: '7 min', tag: 'periodization' },
+  { topic: 'Sports nutrition', title: 'Caffeine: dose, timing, individual response', read: '5 min', tag: 'ergogenic' },
+  { topic: 'Sports nutrition', title: 'Iron, ferritin, and the endurance ceiling', read: '6 min', tag: 'micronutrients' },
+];
+---
+<Base title="Articles — t90.club" description="Short, sharp articles on sports nutrition for endurance athletes.">
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="eyebrow">Articles</div>
+      <h1>Sports nutrition,<br/>cut to the bone.</h1>
+      <p class="lede muted">Short articles on the nutrition questions endurance athletes actually ask. No fluff. Cited sources. Numbers you can use.</p>
+      <span class="status-pill mono">Coming soon · structure only</span>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <ul class="art-list" role="list">
+        {drafts.map((d, i) => (
+          <li class="art-item">
+            <div class="art-num mono">{String(i+1).padStart(2,'0')}</div>
+            <div class="art-meta">
+              <span class="mono muted">{d.topic} · {d.tag}</span>
+            </div>
+            <div class="art-title">{d.title}</div>
+            <div class="art-read mono muted">{d.read}</div>
+          </li>
+        ))}
+      </ul>
+      <p class="muted footnote">First articles drop alongside v1.0. Calculators ship first.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head { padding: var(--s-9) 0 var(--s-7); border-bottom: 1px solid var(--line); }
+  .lede { font-size: 1.1rem; max-width: 580px; margin-top: var(--s-4); }
+  .status-pill {
+    display: inline-block; margin-top: var(--s-5);
+    padding: 5px 10px; border: 1px solid var(--line);
+    border-radius: 999px; color: var(--muted);
+    background: var(--canvas-2);
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  .art-list { list-style: none; padding: 0; margin: 0; }
+  .art-item {
+    display: grid;
+    grid-template-columns: 60px 200px 1fr 80px;
+    align-items: center;
+    gap: var(--s-5);
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--line);
+    opacity: 0.7;
+  }
+  .art-item:first-child { border-top: 1px solid var(--line); }
+  .art-num { color: var(--muted); }
+  .art-title { font-size: 1.05rem; font-weight: 500; }
+  @media (max-width: 720px) {
+    .art-item { grid-template-columns: 40px 1fr; gap: var(--s-3); }
+    .art-meta, .art-read { display: none; }
+  }
+
+  .footnote { margin-top: var(--s-6); font-size: 0.92rem; }
+</style>
