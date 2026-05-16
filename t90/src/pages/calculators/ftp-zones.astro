@@ -1,0 +1,157 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="FTP power zones — t90.club" description="Coggan 7-zone cycling power breakdown from your FTP.">
+  <section class="calc-page-head">
+    <div class="container-narrow">
+      <a href="/calculators" class="calc-back">← All calculators</a>
+      <div class="eyebrow">Cycling performance</div>
+      <h1>FTP power zones</h1>
+      <p class="calc-lede">Coggan's 7-zone power breakdown, calculated from your Functional Threshold Power. The standard prescription system for cycling training.</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container-narrow">
+      <div class="calc-card">
+        <div class="calc-form">
+          <div class="row cols-1">
+            <label class="field">
+              <span class="field-row">FTP <em>watts</em></span>
+              <input id="ftp" type="number" min="50" max="600" step="1" value="250"/>
+            </label>
+          </div>
+        </div>
+
+        <div class="result-block">
+          <!-- Zone table -->
+          <div class="zones">
+            <div class="z header">
+              <span class="z-name">Zone</span>
+              <span class="z-desc">Purpose</span>
+              <span class="z-val">Power</span>
+            </div>
+            <div class="z" data-z="1"><span class="z-name">Z1 · Active Recovery</span><span class="z-desc">Easy spin, recovery rides</span><span class="z-val" data-cell="range">—</span></div>
+            <div class="z" data-z="2"><span class="z-name">Z2 · Endurance</span><span class="z-desc">All-day base, fat burning</span><span class="z-val" data-cell="range">—</span></div>
+            <div class="z" data-z="3"><span class="z-name">Z3 · Tempo</span><span class="z-desc">Sweet-spot, sustained efforts</span><span class="z-val" data-cell="range">—</span></div>
+            <div class="z" data-z="4"><span class="z-name">Z4 · Threshold</span><span class="z-desc">Lactate threshold, TT</span><span class="z-val" data-cell="range">—</span></div>
+            <div class="z" data-z="5"><span class="z-name">Z5 · VO₂ max</span><span class="z-desc">3–8 min intervals</span><span class="z-val" data-cell="range">—</span></div>
+            <div class="z" data-z="6"><span class="z-name">Z6 · Anaerobic</span><span class="z-desc">30s–2min, hard</span><span class="z-val" data-cell="range">—</span></div>
+            <div class="z" data-z="7"><span class="z-name">Z7 · Neuromuscular</span><span class="z-desc">Sprints, max power</span><span class="z-val" data-cell="range">—</span></div>
+          </div>
+
+          <!-- Stacked zone ladder -->
+          <div class="chart-wrap">
+            <div class="chart-title mono">Zone ladder by power</div>
+            <svg id="chart" viewBox="0 0 700 160" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+        </div>
+      </div>
+
+      <details class="notes">
+        <summary>Formula & limits</summary>
+        <p><strong>Coggan training zones</strong> as % of FTP (Functional Threshold Power):</p>
+        <pre>Z1 Active Recovery    &lt; 55%
+Z2 Endurance         56–75%
+Z3 Tempo             76–90%
+Z4 Threshold        91–105%
+Z5 VO₂ max         106–120%
+Z6 Anaerobic       121–150%
+Z7 Neuromuscular     &gt; 150%</pre>
+        <p>FTP itself is roughly the highest power you can sustain for ~1 hour. Common ways to estimate: 20-min test × 0.95, or a recent 1-hr TT.</p>
+        <p class="muted">Power zones are blunt tools. Real-world cycling has cadence, terrain, and duration effects that pure %FTP doesn't capture — use these as a starting framework, not gospel.</p>
+      </details>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const ftpEl=$('#ftp'), chart=$('#chart');
+
+  // Zone boundaries as % of FTP (upper bound; Z1 starts at 0, Z7 is open-ended)
+  const zones = [
+    { id:1, name:'Z1', lo:0,    hi:0.55, color:'#3a3a3a' },
+    { id:2, name:'Z2', lo:0.56, hi:0.75, color:'#4a6f8a' },
+    { id:3, name:'Z3', lo:0.76, hi:0.90, color:'#5f9d6e' },
+    { id:4, name:'Z4', lo:0.91, hi:1.05, color:'#d4a64d' },
+    { id:5, name:'Z5', lo:1.06, hi:1.20, color:'#e0703a' },
+    { id:6, name:'Z6', lo:1.21, hi:1.50, color:'#d0413c' },
+    { id:7, name:'Z7', lo:1.51, hi:2.00, color:'#a02a55' },
+  ];
+
+  function calc() {
+    const ftp = +ftpEl.value;
+    if (!ftp || ftp < 50) return;
+
+    zones.forEach((z) => {
+      const lo = Math.round(z.lo * ftp);
+      const hi = z.id === 7 ? '∞' : Math.round(z.hi * ftp);
+      const row = document.querySelector(`.zones .z[data-z="${z.id}"] [data-cell="range"]`);
+      row.textContent = z.id === 7 ? `${lo}+ W` : `${lo}–${hi} W`;
+    });
+
+    drawChart(ftp);
+  }
+
+  function drawChart(ftp) {
+    const W=700, H=160, padX=16, padY=24, barH=40, barY=42;
+    const usableW = W - padX*2;
+    const maxFtp = 2.0; // chart spans up to 200% FTP
+    const xScale = (pct) => padX + (pct/maxFtp) * usableW;
+
+    let segs = '';
+    let labels = '';
+    zones.forEach((z) => {
+      const x1 = xScale(z.lo);
+      const x2 = xScale(z.hi);
+      const w  = x2 - x1;
+      segs += `<rect x="${x1}" y="${barY}" width="${w}" height="${barH}" fill="${z.color}"/>`;
+      labels += `<text x="${x1 + w/2}" y="${barY + barH/2 + 4}" fill="#fff" font-family="Bricolage Grotesque, sans-serif" font-weight="600" font-size="12" text-anchor="middle">${z.name}</text>`;
+    });
+
+    // FTP marker line at 100%
+    const ftpX = xScale(1.0);
+    const ftpMarker = `
+      <line x1="${ftpX}" x2="${ftpX}" y1="${barY - 8}" y2="${barY + barH + 8}" stroke="#fff" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="${ftpX}" y="${barY - 14}" fill="#fff" font-family="JetBrains Mono, monospace" font-size="10" text-anchor="middle">FTP · ${ftp}W</text>
+    `;
+
+    // tick marks every 25% FTP
+    const ticks = [];
+    for (let pct = 0; pct <= maxFtp; pct += 0.25) {
+      const x = xScale(pct);
+      const watts = Math.round(pct * ftp);
+      ticks.push(`
+        <line x1="${x}" x2="${x}" y1="${barY+barH}" y2="${barY+barH+5}" stroke="rgba(255,255,255,0.3)"/>
+        <text x="${x}" y="${barY+barH+20}" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="9" text-anchor="middle">${watts}W</text>
+      `);
+    }
+
+    chart.innerHTML = segs + labels + ftpMarker + ticks.join('');
+  }
+
+  ftpEl.addEventListener('input', calc);
+  calc();
+</script>
+
+<style>
+  .row.cols-1 { grid-template-columns: 1fr; max-width: 280px; }
+
+  .result-block { background: var(--ink); color: #fff; padding: var(--s-6); }
+  .zones { margin-bottom: var(--s-5); }
+  .zones .z { grid-template-columns: 170px 1fr 130px; }
+  .zones .z.header { background: rgba(255,255,255,0.04); }
+  .zones .z.header .z-name,
+  .zones .z.header .z-desc,
+  .zones .z.header .z-val {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); font-weight: 400;
+  }
+  .zones .z-val { text-align: right; }
+
+  .chart-wrap { background: rgba(255,255,255,0.03); border-radius: var(--radius); padding: var(--s-3) var(--s-4); }
+  .chart-title { color: rgba(255,255,255,0.55); margin-bottom: var(--s-2); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.7rem; }
+  .chart-wrap svg { display: block; width: 100%; height: auto; }
+</style>
