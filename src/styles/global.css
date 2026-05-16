@@ -1,0 +1,238 @@
+/* ============================================
+   t90.club — design tokens
+   Body: McLaren · Display: Bricolage Grotesque SemiBold
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=McLaren&family=Bricolage+Grotesque:opsz,wght@12..96,600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Color */
+  --ink: #0a0a0a;
+  --ink-2: #1a1a1a;
+  --muted: #6b6b6b;
+  --muted-2: #9a9a9a;
+  --line: #ececec;
+  --line-2: #f4f4f4;
+  --canvas: #fafaf9;
+  --canvas-2: #ffffff;
+  --accent: #ff5a1f;
+  --accent-soft: #fff1e9;
+  --good: #0a7a4b;
+
+  /* Type — McLaren is the regular text face; Bricolage Grotesque is the big-bold display face */
+  --font-sans: 'McLaren', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'McLaren', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Spacing */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+
+  /* Layout */
+  --container: 1120px;
+  --container-narrow: 760px;
+  --radius: 6px;
+  --radius-lg: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--accent); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); line-height: 1.02; letter-spacing: -0.035em; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; }
+h3 { font-size: 1.15rem; }
+
+p { margin: 0 0 var(--s-4); color: var(--ink-2); }
+strong, b { font-family: var(--font-display); font-weight: 600; }
+
+/* Utilities */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-5); }
+.container-narrow { max-width: var(--container-narrow); margin: 0 auto; padding: 0 var(--s-5); }
+.mono { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.02em; }
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.muted { color: var(--muted); }
+.divider { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  padding: 10px 16px; border-radius: var(--radius);
+  font-family: var(--font-sans); font-weight: 400; font-size: 0.95rem;
+  border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+.btn:hover { background: var(--ink-2); color: #fff; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink); background: transparent; color: var(--ink); }
+
+/* Page sections */
+.section { padding: var(--s-9) 0; }
+.section-tight { padding: var(--s-7) 0; }
+
+/* Subtle grid background */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+          mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+/* Reveal */
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.rise { animation: rise 600ms cubic-bezier(.2,.7,.2,1) both; }
+.rise-1 { animation-delay: 60ms; }
+.rise-2 { animation-delay: 140ms; }
+.rise-3 { animation-delay: 220ms; }
+.rise-4 { animation-delay: 300ms; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* ============================================
+   Shared calculator page styles
+   Every individual calculator (bmr, tdee, …) uses these.
+   ============================================ */
+
+.calc-page-head { padding: var(--s-8) 0 var(--s-5); }
+.calc-back { font-size: 0.86rem; color: var(--muted); display: inline-block; margin-bottom: var(--s-4); }
+.calc-back:hover { color: var(--ink); }
+.calc-lede { font-size: 1.05rem; max-width: 580px; margin-top: var(--s-3); color: var(--muted); }
+
+.calc-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--canvas-2);
+  overflow: hidden;
+}
+.calc-form { padding: var(--s-6); }
+
+/* Segmented control (e.g. male/female, metric/imperial) */
+.seg-group {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: var(--s-4);
+  margin-right: var(--s-3);
+}
+.seg { position: relative; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.seg span {
+  display: block;
+  padding: 7px 14px;
+  font-size: 0.86rem;
+  color: var(--muted);
+  border-radius: 4px;
+  transition: all 150ms ease;
+}
+.seg.active span { background: var(--ink); color: #fff; }
+
+/* Field grid */
+.row { display: grid; gap: var(--s-4); margin-top: var(--s-4); }
+.row.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 560px) {
+  .row.cols-2, .row.cols-3, .row.cols-4 { grid-template-columns: 1fr; }
+}
+
+.field { display: flex; flex-direction: column; gap: var(--s-2); font-size: 0.86rem; color: var(--muted); }
+.field-label { font-size: 0.86rem; color: var(--muted); display: block; margin-bottom: var(--s-3); }
+.field span.field-row { display: flex; justify-content: space-between; align-items: baseline; }
+.field em { font-style: normal; color: var(--muted-2); font-size: 0.72rem; font-family: var(--font-mono); }
+.field input, .field select {
+  padding: 11px 12px;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font: inherit;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  font-size: 1rem;
+  transition: border-color 150ms ease;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--ink); }
+
+/* Result panel */
+.result {
+  padding: var(--s-6);
+  background: var(--ink);
+  color: #fff;
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s-4); flex-wrap: wrap;
+}
+.result-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.result-num .unit { font-size: 0.9rem; font-family: var(--font-mono); color: var(--muted-2); margin-left: var(--s-3); }
+.result-lbl { font-family: var(--font-mono); color: var(--muted-2); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.72rem; }
+
+/* Multi-row result table (e.g. for zone outputs) */
+.zones {
+  background: var(--ink); color: #fff;
+  padding: 0;
+}
+.zones .z {
+  display: grid; grid-template-columns: 80px 1fr auto;
+  align-items: center; gap: var(--s-4);
+  padding: var(--s-4) var(--s-6);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.95rem;
+}
+.zones .z:last-child { border-bottom: 0; }
+.zones .z-name { font-family: var(--font-display); font-weight: 600; }
+.zones .z-desc { color: var(--muted-2); font-size: 0.85rem; }
+.zones .z-val { font-family: var(--font-mono); font-size: 0.9rem; color: #fff; }
+
+/* Notes block */
+.notes {
+  margin-top: var(--s-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--s-4) var(--s-5);
+  background: var(--canvas-2);
+}
+.notes summary { cursor: pointer; font-weight: 600; font-family: var(--font-display); }
+.notes pre {
+  margin: var(--s-3) 0;
+  padding: var(--s-4);
+  background: var(--canvas);
+  border-radius: var(--radius);
+  font-size: 0.86rem;
+  font-family: var(--font-mono);
+  overflow-x: auto;
+}
+.notes p { margin: var(--s-3) 0 0; font-size: 0.92rem; }
