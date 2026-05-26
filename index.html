@@ -5,223 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>t90.club — Calculators for endurance athletes</title>
 <meta name="description" content="A focused calculator suite for runners and cyclists. No accounts. No devices. No tracking." />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0a'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='sans-serif' font-weight='700' font-size='26' fill='%23fff' letter-spacing='-1'%3Et90%3C/text%3E%3Ccircle cx='50' cy='48' r='3' fill='%23ff5a1f'/%3E%3C/svg%3E"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23FA4B13'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='sans-serif' font-weight='700' font-size='22' fill='%23fff' letter-spacing='-1'%3ET-90%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=McLaren&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/mona-sans@5.1.0/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/mona-sans@5.1.0/500.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/mona-sans@5.1.0/600.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-<style>
-/* ============================================================ */
-/*  t90.club — single-file build (v0.1)                          */
-/*  McLaren (body) + Bricolage Grotesque semibold (display)      */
-/* ============================================================ */
-:root{
-  --ink:#0a0a0a;--ink-2:#1a1a1a;--muted:#6b6b6b;--muted-2:#9a9a9a;
-  --line:#ececec;--line-2:#f4f4f4;--canvas:#fafaf9;--canvas-2:#ffffff;
-  --accent:#ff5a1f;--accent-soft:#fff1e9;--good:#0a7a4b;
-  --font-display:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
-  --font-sans:'McLaren',ui-sans-serif,system-ui,sans-serif;
-  --font-mono:'JetBrains Mono',ui-monospace,monospace;
-  --s-2:8px;--s-3:12px;--s-4:16px;--s-5:24px;--s-6:32px;--s-7:48px;--s-8:64px;--s-9:96px;--s-10:128px;
-  --container:1120px;--container-narrow:760px;--radius:6px;--radius-lg:12px;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--canvas);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-a:hover{color:var(--accent)}
-h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;margin:0}
-h1{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.02;letter-spacing:-.035em}
-h2{font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.1}
-h3{font-size:1.15rem}
-p{margin:0 0 var(--s-4);color:var(--ink-2)}
-strong{font-family:var(--font-display);font-weight:600}
-input,select,button,textarea{font-family:inherit}
-.container{max-width:var(--container);margin:0 auto;padding:0 var(--s-5)}
-.container-narrow{max-width:var(--container-narrow);margin:0 auto;padding:0 var(--s-5)}
-.mono{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.02em}
-.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.muted{color:var(--muted)}
-.btn{display:inline-flex;align-items:center;gap:var(--s-2);padding:10px 16px;border-radius:var(--radius);font-family:var(--font-display);font-weight:600;font-size:.92rem;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;transition:transform 120ms ease,background 120ms ease}
-.btn:hover{background:var(--ink-2);color:#fff;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.btn-ghost:hover{border-color:var(--ink);background:transparent;color:var(--ink)}
-.section{padding:var(--s-9) 0}
-.section-tight{padding:var(--s-7) 0}
-.divider{height:1px;background:var(--line);border:0;margin:0}
-.grid-bg{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.rise{animation:rise 500ms cubic-bezier(.2,.7,.2,1) both}
-.rise-2{animation-delay:100ms}.rise-3{animation-delay:180ms}.rise-4{animation-delay:260ms}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
-
-/* HEADER */
-.site-header{position:sticky;top:0;z-index:10;background:color-mix(in oklab,var(--canvas) 86%,transparent);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line)}
-.header-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{display:inline-flex;align-items:baseline;gap:2px;font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
-.logo-mark{color:var(--ink)}.logo-dot{color:var(--accent);font-weight:700}.logo-tld{color:var(--muted);font-weight:500}
-.nav{display:flex;gap:var(--s-5)}
-.nav a{font-family:var(--font-display);font-size:.92rem;color:var(--muted);font-weight:500}
-.nav a:hover,.nav a.active{color:var(--ink)}
-@media (max-width:720px){.nav{gap:var(--s-3)}.nav a{font-size:.82rem}}
-
-/* PAGE ROUTING */
-.page{display:none}
-.page.is-active{display:block}
-
-/* HOME HERO */
-.hero{position:relative;padding:var(--s-10) 0;overflow:hidden}
-.hero-bg{position:absolute;inset:0;opacity:.55;pointer-events:none}
-.hero-inner{position:relative;max-width:900px}
-.hero h1 .accent-underline{background:linear-gradient(transparent 64%,var(--accent-soft) 64%);padding:0 4px}
-.lede{font-size:1.2rem;color:var(--ink-2);max-width:640px;margin-top:var(--s-5)}
-.hero-cta{margin-top:var(--s-7)}
-@media (max-width:720px){.hero{padding:var(--s-8) 0}}
-
-/* CALCULATOR HUB */
-.page-head{padding:var(--s-9) 0 var(--s-7);border-bottom:1px solid var(--line)}
-.page-head h1{margin-top:var(--s-3)}
-.page-head .lede{font-size:1.1rem;max-width:640px;margin-top:var(--s-4)}
-.filter-row{display:flex;align-items:center;gap:var(--s-4);margin-top:var(--s-6);max-width:640px}
-.filter-input{flex:1;padding:12px 14px;background:var(--canvas-2);border:1px solid var(--line);border-radius:var(--radius);font:inherit;color:var(--ink);transition:border-color 150ms ease}
-.filter-input:focus{outline:none;border-color:var(--ink)}
-.cat-section{padding:var(--s-8) 0 var(--s-7);border-bottom:1px solid var(--line)}
-.cat-section:last-of-type{border-bottom:0}
-.cat-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--s-6);gap:var(--s-5)}
-.cat-head h2{margin-top:var(--s-2)}
-.cat-head p{margin:var(--s-2) 0 0;max-width:540px}
-.calc-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
-@media (max-width:920px){.calc-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.calc-grid{grid-template-columns:1fr}}
-.calc-card{background:var(--canvas-2)}
-.calc-link{display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:var(--s-5);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background 150ms ease;min-height:160px}
-.calc-link:hover{background:var(--canvas);color:var(--ink)}
-.calc-link.is-soon{opacity:.85}
-.calc-link.is-soon:hover{opacity:1}
-.calc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s-3);margin-bottom:var(--s-3)}
-.calc-card h3{font-size:1rem;line-height:1.25}
-.calc-card p{color:var(--muted);margin:0 0 var(--s-4);font-size:.92rem}
-.calc-arrow{font-family:var(--font-display);font-size:.85rem;font-weight:600;color:var(--ink)}
-.calc-link:hover .calc-arrow{color:var(--accent)}
-.calc-link.is-soon .calc-arrow{color:var(--muted)}
-.status{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.08em;padding:3px 7px;border-radius:4px;text-transform:uppercase;border:1px solid var(--line);color:var(--muted);background:var(--canvas);white-space:nowrap}
-.status.live{color:var(--good);border-color:color-mix(in oklab,var(--good) 30%,var(--line));background:color-mix(in oklab,var(--good) 6%,var(--canvas-2))}
-
-/* INDIVIDUAL CALCULATOR PAGES — shared */
-.calc-page-head{padding:var(--s-8) 0 var(--s-5)}
-.calc-back{font-size:.86rem;color:var(--muted);display:inline-block;margin-bottom:var(--s-4)}
-.calc-back:hover{color:var(--ink)}
-.calc-lede{font-size:1.05rem;color:var(--muted);max-width:580px;margin-top:var(--s-3)}
-.calc-card-wrap{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--canvas-2);overflow:hidden;margin-top:var(--s-6)}
-.calc-form{padding:var(--s-6)}
-.row{display:grid;gap:var(--s-4)}
-.row.cols-1{grid-template-columns:1fr;max-width:280px}
-.row.cols-2{grid-template-columns:repeat(2,1fr)}
-.row.cols-3{grid-template-columns:repeat(3,1fr)}
-.row.cols-4{grid-template-columns:repeat(4,1fr)}
-@media (max-width:560px){.row.cols-3,.row.cols-4{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:var(--s-2);font-size:.86rem;color:var(--muted)}
-.field-row{display:flex;justify-content:space-between;align-items:baseline}
-.field em{font-style:normal;color:var(--muted-2);font-size:.72rem;font-family:var(--font-mono)}
-.field-label{font-size:.86rem;color:var(--muted);display:block;margin-bottom:var(--s-3)}
-.field input,.field select{padding:11px 12px;background:var(--canvas);border:1px solid var(--line);border-radius:var(--radius);font:inherit;color:var(--ink);font-size:1rem;transition:border-color 150ms ease}
-.field input:focus,.field select:focus{outline:none;border-color:var(--ink)}
-.seg-group{display:inline-flex;padding:3px;background:var(--canvas);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:var(--s-4);margin-right:var(--s-3)}
-.seg{position:relative;cursor:pointer}
-.seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
-.seg span{display:block;padding:7px 14px;font-size:.86rem;color:var(--muted);border-radius:4px;transition:all 150ms ease;font-family:var(--font-display);font-weight:500}
-.seg.active span{background:var(--ink);color:#fff}
-.opt{position:relative;cursor:pointer}
-.opt input{position:absolute;opacity:0;inset:0;cursor:pointer}
-.opt span{display:flex;flex-direction:column;gap:2px;padding:var(--s-3);border:1px solid var(--line);border-radius:var(--radius);background:var(--canvas);transition:all 150ms ease;min-height:64px}
-.opt span strong{font-size:.9rem;font-weight:600;font-family:var(--font-display);color:var(--ink)}
-.opt span em{font-style:normal;font-size:.74rem;color:var(--muted)}
-.opt.active span{background:var(--ink);border-color:var(--ink)}
-.opt.active span strong,.opt.active span em{color:#fff}
-.opt.active span em{color:var(--muted-2)}
-input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:var(--line);border-radius:999px;outline:none}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ink);cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--ink)}
-input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--ink);cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--ink)}
-.range-marks{display:flex;justify-content:space-between;margin-top:6px;font-family:var(--font-mono);font-size:.7rem;color:var(--muted)}
-
-/* RESULT BLOCK (dark) */
-.result-block{background:var(--ink);color:#fff;padding:var(--s-6)}
-.result-headline{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;margin-bottom:var(--s-5)}
-.result-num{font-family:var(--font-display);font-size:clamp(2.6rem,6vw,3.6rem);font-weight:600;letter-spacing:-.03em;line-height:1}
-.result-num .unit{font-size:.9rem;font-family:var(--font-mono);color:var(--muted-2);margin-left:var(--s-3)}
-.result-lbl{font-family:var(--font-mono);color:var(--muted-2);letter-spacing:.12em;text-transform:uppercase;font-size:.72rem}
-
-/* CHART */
-.chart-wrap{background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:var(--s-3) var(--s-4);margin-top:var(--s-3)}
-.chart-title{color:rgba(255,255,255,0.55);margin-bottom:var(--s-2);letter-spacing:.1em;text-transform:uppercase;font-size:.7rem}
-.chart-wrap svg{display:block;width:100%;height:auto}
-
-/* ZONES TABLE (dark rows) */
-.zones{display:flex;flex-direction:column;background:rgba(255,255,255,0.02);margin-bottom:var(--s-5);border-radius:var(--radius);overflow:hidden}
-.z{display:grid;align-items:center;padding:var(--s-3) var(--s-4);gap:var(--s-4);border-bottom:1px solid rgba(255,255,255,0.04)}
-.z:last-child{border-bottom:0}
-.z.header{background:rgba(255,255,255,0.04)}
-.z.header span{font-family:var(--font-mono)!important;font-size:.7rem!important;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.55)!important;font-weight:400!important}
-.z-name{font-family:var(--font-display);font-weight:600;color:#fff}
-.z-desc{color:rgba(255,255,255,0.7);font-size:.92rem}
-.z-val{font-family:var(--font-mono);color:#fff;text-align:right}
-
-/* CALLOUTS GRID */
-.callouts{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-3);margin-bottom:var(--s-5);padding-bottom:var(--s-5);border-bottom:1px solid rgba(255,255,255,0.08)}
-@media (max-width:560px){.callouts{grid-template-columns:1fr}}
-.callout-num{font-family:var(--font-display);font-weight:600;font-size:1.6rem;letter-spacing:-.02em;line-height:1}
-.callout-u{font-size:.78rem;font-family:var(--font-mono);color:var(--muted-2);margin-left:4px}
-.callout-lbl{color:rgba(255,255,255,0.55);margin-top:6px;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem}
-
-/* LEGEND */
-.legend{display:flex;flex-wrap:wrap;gap:var(--s-4);margin-top:var(--s-3);font-family:var(--font-mono);font-size:.72rem;color:rgba(255,255,255,0.65)}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
-.legend b{color:#fff;font-weight:600;font-family:var(--font-mono)}
-
-/* MACRO SPLIT */
-.macro-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-3);padding-top:var(--s-5);border-top:1px solid rgba(255,255,255,0.08)}
-.macro-num{font-family:var(--font-display);font-weight:600;font-size:1.8rem;letter-spacing:-.02em;line-height:1}
-.macro-u{font-size:.8rem;font-family:var(--font-mono);color:var(--muted-2);margin-left:4px}
-.macro-lbl{color:rgba(255,255,255,0.55);margin-top:6px;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;font-family:var(--font-mono)}
-
-/* NOTES */
-.notes{margin-top:var(--s-6);border:1px solid var(--line);border-radius:var(--radius);padding:var(--s-4) var(--s-5);background:var(--canvas-2)}
-.notes summary{cursor:pointer;font-family:var(--font-display);font-weight:600}
-.notes pre{margin:var(--s-3) 0;padding:var(--s-4);background:var(--canvas);border-radius:var(--radius);font-size:.86rem;font-family:var(--font-mono);overflow-x:auto;line-height:1.5}
-
-/* STUB PAGE */
-.soon-card{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--canvas-2);padding:var(--s-7)}
-.soon-badge{display:inline-block;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--canvas);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;margin-bottom:var(--s-5);font-family:var(--font-mono)}
-.soon-card h2{margin-bottom:var(--s-4)}
-.soon-card p{font-size:1.02rem;max-width:580px}
-.soon-card .btn{margin-top:var(--s-5)}
-
-/* PLACEHOLDER */
-.placeholder{background:var(--accent-soft);color:#8a3a17;padding:2px 6px;border-radius:3px;font-style:italic}
-.prose-long h2{margin-top:var(--s-7);margin-bottom:var(--s-3)}
-.prose-long h2:first-child{margin-top:0}
-
-/* FOOTER */
-.site-footer{margin-top:var(--s-10);border-top:1px solid var(--line);background:var(--canvas-2)}
-.footer-inner{display:grid;grid-template-columns:1.2fr 2fr;gap:var(--s-7);padding:var(--s-8) var(--s-5) var(--s-6);max-width:var(--container);margin:0 auto}
-.footer-cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-5)}
-.footer-cols a{display:block;color:var(--ink-2);font-size:.92rem;padding:4px 0}
-.footer-cols .eyebrow{margin-bottom:var(--s-3)}
-.footer-bottom{display:flex;justify-content:space-between;padding:var(--s-4) var(--s-5);border-top:1px solid var(--line);max-width:var(--container);margin:0 auto}
-@media (max-width:720px){.footer-inner{grid-template-columns:1fr}}
-</style>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
+
+
 <header class="site-header">
   <div class="container header-inner">
-    <a href="#/" class="logo" data-route="/"><span class="logo-mark">t90</span><span class="logo-dot">·</span><span class="logo-tld">club</span></a>
-    <nav class="nav">
-      <a href="#/calculators" data-route="/calculators">Calculators</a>
-      <a href="#/articles" data-route="/articles">Articles</a>
-      <a href="#/about" data-route="/about">About</a>
-      <a href="#/creator" data-route="/creator">Creator</a>
-    </nav>
+    <a href="#/" class="logo" data-route="/"><img src="data:image/png;base64,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" alt="T-90" style="height:36px;width:auto"/></a>
+    <a href="#" class="login-btn"><i data-lucide="log-in" style="width:16px;height:16px;stroke-width:1.5"></i> <span>Login</span></a>
   </div>
 </header>
 
@@ -229,44 +31,133 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
 
 <!-- ============ HOME ============ -->
 <section class="page" data-page="/">
-  <div class="hero">
-    <div class="grid-bg hero-bg" aria-hidden="true"></div>
-    <div class="container hero-inner">
-      <h1 class="rise rise-2">Endurance training,<br/>reduced to <span class="accent-underline">math.</span></h1>
-      <p class="lede rise rise-3">A focused suite of <strong>13 calculators</strong> for runners and cyclists. No accounts. No wearables. No data harvesting. Open a calculator, get an answer, close the tab.</p>
-      <div class="hero-cta rise rise-4">
-        <a href="#/calculators" class="btn">Open the calculators →</a>
+
+  <!-- HERO — split layout -->
+  <div class="hp-hero">
+    <div class="hp-hero-left">
+      <h1 class="hp-h1"><i>Your Alter Ego</i></h1>
+      <p class="hp-sub">You can compete with others, but can you compete with yourself?</p>
+      <a href="#hp-features" class="hp-btn"><span>Explore Tools</span> <i data-lucide="corner-up-right" style="width:16px;height:16px;stroke-width:1.5"></i></a>
+    </div>
+    <div class="hp-hero-right">
+      <div class="hp-placeholder"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Calculator — left tag, left-aligned -->
+  <div class="hp-section" id="hp-features">
+    <div class="hp-tag-col hp-tag-left">
+      <div class="hp-tag">Explore Tools</div>
+      <div class="hp-tag-line-v"></div>
+    </div>
+    <div class="hp-section-body">
+      <div class="hp-section-content hp-align-left">
+        <h2 class="hp-h2"><i>Understand your<br/>body stats.</i></h2>
+        <p class="hp-p">Use <strong>CALCULATOR,</strong> to understand your body before crushing your <i>Alter Ego.</i><br/>Before competing, understand & listen your body.</p>
+        <a href="#/calculators" class="hp-btn"><span>Use Calculator</span> <i data-lucide="corner-up-right" style="width:16px;height:16px;stroke-width:1.5"></i></a>
       </div>
     </div>
   </div>
+
+  <!-- Squiggly divider — right aligned -->
+  <div style="padding:0 48px"><svg class="squiggly-line squiggly-right" viewBox="0 0 571 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M565.561 3.97966C562.361 4.03177 558.167 3.97605 554.98 3.89958C553.981 3.87587 554.486 3.76985 553.797 3.74871C552.448 3.70749 551.191 3.75948 549.859 3.71038C549.417 3.69358 549.967 3.52565 549.504 3.51189C546.965 3.43768 544.564 3.48045 541.993 3.44475C529.328 3.26863 516.879 3.20559 504.06 3.12908C499.833 3.104 494.694 2.9516 490.328 3.01824C489.819 3.02618 490.123 3.17358 490.026 3.18572C488.505 3.37171 489.01 3.07414 488.017 3.0346C484.076 2.8785 479.693 2.86492 475.9 2.92181C474.286 2.94644 475.904 3.23922 474.28 3.07489C474.167 3.06378 474.576 2.90726 474.134 2.89056C473.13 2.85301 471.226 2.88099 470.448 2.86859C468.949 2.8439 468.701 2.84547 467.283 2.84369C465.345 2.83989 463.039 2.76208 460.96 2.79754C460.516 2.80558 461.104 2.96604 460.396 2.99334C459.687 3.02061 457.813 3.007 457.181 2.96918C456.549 2.93133 456.818 2.80521 456.706 2.7763C455.786 2.53231 453.617 2.87024 453.338 2.8786C448.252 3.021 443.89 2.82849 439.115 2.82904C435.49 2.82987 431.614 2.89342 428.165 2.88471C424.056 2.8737 420.573 2.78675 416.581 2.8017C416.16 2.80309 416.654 2.99175 416.139 2.99384C410.672 3.01579 405.244 2.99523 399.8 2.86786C399.255 2.85492 399.958 2.68928 399.413 2.66645C396.074 2.53032 390.79 2.2033 388.807 2.9245C386.545 2.89634 383.799 2.86725 381.776 2.72187C380.471 2.6283 381.738 2.44785 380.136 2.52485C379.774 2.542 380.244 2.70004 379.702 2.71381C377.42 2.77167 374.927 2.7203 372.669 2.80195C372.21 2.81893 372.335 2.96053 372.205 2.98603C371.111 3.19253 369.291 2.85117 368.894 2.82636C365.872 2.64139 363.665 2.71418 360.85 2.70966C360.197 2.70854 360.969 2.89874 360.34 2.90449C357.08 2.93175 353.702 2.9154 350.51 2.831C349.8 2.81177 350.453 2.64975 350.114 2.63227C348.617 2.55717 348.286 2.86318 346.851 2.79707C346.548 2.78352 346.719 2.64482 346.663 2.62959C345.8 2.39046 345.049 2.72928 344.827 2.73676C342.017 2.83897 340.221 2.48526 337.506 2.53535C337.181 2.5417 337.914 2.7172 337.001 2.72431C330.919 2.77276 324.487 2.72455 318.467 2.58418C317.531 2.56259 318.199 2.43075 318.14 2.4145C317.18 2.16057 316.559 2.50081 316.254 2.51362C313.846 2.60586 311.597 2.32053 309.961 2.72578C299.764 2.58515 289.614 2.81272 279.501 2.44966C279.372 2.44546 279.603 2.27789 279.346 2.27022C276.257 2.17613 276.851 2.43656 274.807 2.75508C274.292 2.83506 272.726 2.45051 272.587 2.42232C272.082 2.31844 272.606 2.06915 272.437 2.04903C271.038 1.89106 271.266 2.71551 269.379 2.71577C269.32 2.7144 269.568 2.56265 269.409 2.54756C268.917 2.50019 268.429 2.56049 267.948 2.50826C266.846 2.38738 266.453 1.98677 264.77 2.21993C264.557 2.25019 264.882 2.71785 263.197 2.69576C262.525 2.68655 259.552 2.69457 258.719 2.66426C257.886 2.63399 258.458 2.48329 258.398 2.47676C256.156 2.27748 257.006 2.19489 255.883 1.89986C254.759 1.60594 255.071 2.30697 254.613 2.38521C254.154 2.46323 252.51 2.29881 252.106 2.24166C251.702 2.18447 252.205 2.08871 251.846 2.05635C249.465 1.84494 250.801 2.40432 250.017 2.51558C248.167 2.77903 246.726 2.25915 245.033 2.20821C244.575 2.19445 244.949 2.31286 244.541 2.32393C242.925 2.36622 241.953 2.204 240.115 2.35274C239.814 2.37698 238.328 2.68955 237.366 2.46016C237.23 2.42709 237.617 2.29753 236.928 2.26851C235.899 2.22496 234.046 2.19664 232.94 2.23995C232.123 2.27199 233.059 2.48546 232.031 2.41915C231.575 2.38954 232.421 2.26465 231.563 2.21944C230.71 2.17424 228.527 2.17973 227.697 2.18404C226.868 2.18845 227.322 2.35038 227.255 2.36129C226.849 2.42378 225.258 2.50186 225.118 2.50167C218.027 2.52144 211.488 2.24849 204.584 2.33883C204.042 2.34568 204.403 2.51644 204.32 2.51925C202.466 2.59079 203.928 2.13679 202.632 1.98483C202.82 2.33134 202.055 2.2686 200.748 2.3066C200.118 2.3252 200.461 2.45937 200.404 2.47311C199.47 2.6769 198.82 2.41367 198.653 2.35983C198.034 2.16174 197.361 2.39579 196.941 2.26339C196.52 2.13198 197.488 1.93716 196.235 1.93966C195.884 2.0637 196.814 2.38786 195.862 2.44039C192.273 2.63911 185.573 2.38478 182.686 2.35836C179.806 2.33197 178.876 2.35485 177.197 2.31002C174.166 2.22897 175.277 2.46947 173.394 2.57955C171.506 2.68962 172.424 2.09788 172.153 1.97067C171.886 1.84352 171.595 1.97441 171.264 1.90451C170.934 1.83462 171.649 1.74813 170.872 1.72189C170.095 1.69568 167.969 1.92189 167.694 2.0549C167.111 2.33669 168.069 2.63245 166.012 2.52853C165.894 2.52236 166.278 2.36676 165.825 2.35104C162.228 2.23125 158.49 2.22383 154.897 2.11789C154.403 2.10308 154.845 1.92998 154.557 1.9194C151.562 1.80868 152.633 2.10055 150.992 2.42477C151.36 1.9933 150.452 1.72932 148.18 1.72677C146.813 1.72509 147.048 1.91354 146.165 2.04635C145.9 2.08639 144.933 1.957 144.758 2.04562C144.18 2.33532 145.091 2.65962 142.747 2.53048C142.644 2.52435 142.972 2.36577 142.616 2.35617C140.32 2.29331 140.045 2.59633 137.563 2.63302C135.617 2.66182 132.157 2.47704 129.941 2.44699C129.988 1.96189 127.896 2.07297 127.047 2.40744C125.609 2.39375 124.056 2.41265 122.666 2.36642C122.188 2.35066 122.502 2.21021 122.442 2.19504C121.517 1.95698 120.892 2.28238 120.582 2.29513C117.218 2.41914 114.478 2.17252 111.268 2.41354C111.154 2.42222 110.969 2.75919 110.111 2.51315C110.056 2.49619 111.116 2.34288 109.606 2.33102C108.096 2.31914 105.249 2.1385 103.152 2.29465C102.644 2.33224 101.361 2.60579 100.331 2.39206C100.194 2.36304 100.344 2.2664 100.146 2.21262C99.5056 2.04126 99.1559 2.38185 98.4033 2.0925C97.6507 1.80317 96.0853 1.58648 93.9707 1.78611C93.9034 1.79191 93.4028 2.06186 92.7379 2.05759C91.6763 2.05054 90.1694 1.99431 89.0611 1.99607C88.5304 1.99701 88.8701 2.16463 88.7779 2.1677C85.2096 2.26163 82.6702 2.11219 78.8475 2.04734C78.1469 2.03512 76.133 2.2637 74.7765 2.08298C73.2868 1.88515 74.8177 1.06222 71.3937 1.25828C70.0127 1.3367 68.2644 2.38074 65.7827 1.83982C60.9696 1.97386 56.5184 1.69702 51.692 1.8884C51.4749 1.89688 50.7886 2.18827 50.2783 2.1843C49.5208 2.17785 49.1049 2.04166 48.564 2.03269C46.2977 1.99167 44.2234 2.10819 42.0381 2.09006C41.2086 2.08348 41.4985 1.94266 40.5091 1.93479C39.5201 1.92705 38.8607 2.11248 37.5206 2.02293C36.5084 1.95466 35.4966 1.57565 34.1531 1.53147C34.1018 1.90533 33.1793 1.89763 31.5392 1.99632C31.2241 2.01546 31.562 2.14558 31.4129 2.16135C30.8061 2.22842 30.2444 2.12058 29.6682 2.19358C29.5281 2.21111 29.5214 2.33879 29.4068 2.36033C28.4325 2.54835 26.8268 2.26116 26.5512 2.21116C25.4943 2.02126 25.0007 2.18731 24.19 2.11253C23.3808 2.03775 24.5908 1.94428 23.6454 1.8989C21.6861 1.80505 19.1684 1.82567 17.1784 1.8198C16.3844 1.81825 16.926 1.98868 16.8125 1.99241C15.1705 2.03564 13.5103 1.85435 12.5999 2.19383C11.4615 1.31607 11.6097 2.27896 9.26282 2.10325C9.07794 2.08904 8.8429 1.67396 9.55255 1.61302C10.2623 1.55214 11.3384 1.68189 12.3232 1.58689C12.5565 1.5646 13.8923 1.17564 14.0745 1.15208C15.5021 0.967941 15.7045 1.58823 15.78 1.62229C16.6365 1.98996 18.2689 1.57093 18.6988 1.54197C20.6653 1.4093 22.3361 1.49653 23.9809 1.40184C25.0567 1.34063 25.1619 0.934321 26.0067 0.946759C28.8146 0.987865 29.795 1.55467 32.441 1.06321C33.0084 0.958395 32.4446 0.51431 34.4777 0.863506C34.6054 0.88552 36.1147 1.20497 36.9869 1.00291C37.0964 0.977433 37.0931 0.848011 37.2374 0.837139C38.2055 0.766813 38.8511 0.869919 39.9057 0.820537C40.9603 0.771156 42.2282 0.697539 43.4322 0.741436C44.1578 0.767684 45.0888 1.00882 45.4362 1.06785C46.4167 1.23791 47.4686 0.959081 48.0761 1.16502C48.6888 1.37199 47.491 1.68631 49.0977 1.82004C49.1572 1.4838 49.2938 1.13867 49.3896 0.800517C52.9106 0.812356 56.3752 0.921084 59.9081 0.906228C60.3462 0.90405 59.8981 0.723282 60.3677 0.716288C62.3487 0.68757 64.079 0.816433 66.1334 0.765115C67.7236 0.7247 69.4673 0.533306 71.1302 0.485086C72.146 0.869848 74.6132 0.73923 76.4058 0.774391C77.0337 0.786541 76.9917 0.889303 77.4382 0.922828C79.1228 1.04682 78.3335 0.706807 78.7952 0.653298C80.7766 0.424931 80.9463 1.19453 83.2823 1.17551C83.4061 1.17477 84.9189 0.764537 85.1273 0.73899C86.4511 0.572408 85.3464 0.881775 86.175 0.912086C87.6878 0.967476 88.7389 1.06545 90.5139 0.945288C91.0315 0.909698 92.2729 0.654007 93.2781 0.851782C93.4103 0.87768 93.3372 1.01328 93.4436 1.02122C95.37 1.15358 95.4207 0.727524 96.5214 0.583228C97.6224 0.438964 99.3229 0.733079 99.6689 0.817846C100.574 1.03713 98.9752 0.911562 98.9261 0.93308C98.3503 1.18917 99.5903 1.14508 100.538 1.16672C100.675 1.58448 102 1.5594 101.52 1.18747C101.466 1.14685 100.728 1.18581 100.538 1.16672C101.37 0.756847 102.826 0.704354 104.435 1.08738C105.188 1.26689 104.476 1.4762 106.763 1.39963C107.801 1.36507 107.4 1.07742 108.316 0.998997C110.409 0.820069 113.129 1.08839 115.287 1.04612C116.07 1.03077 115.307 0.873311 115.842 0.857396C117.262 0.814666 118.515 0.932808 119.941 0.872288C120.071 0.866605 119.755 0.701781 120.198 0.699681C123.561 0.680539 126.489 0.786109 130 0.789035C131.697 0.790374 134.73 0.69947 136.487 0.717746C139.533 0.748449 143.28 0.988128 145.882 0.929903C147.579 0.892632 147.206 0.727774 147.933 0.61545C149.337 0.39772 151.82 0.787725 152.155 0.848115C152.165 0.850114 150.705 0.888978 151.484 0.973603C151.937 1.14993 152.138 0.84888 152.155 0.848115C152.374 0.887128 155.291 0.924551 155.871 0.893037C156.185 0.875815 156.009 0.719621 156.173 0.713594C160.074 0.573815 163.982 0.534117 167.938 0.607148C168.008 0.610303 167.903 0.785015 168.066 0.790253C170.357 0.867933 171.823 0.654206 173.712 0.527314C175.601 0.400477 177.099 0.442958 178.217 0.742889C179.642 0.705125 181.686 0.837723 182.863 0.918181C184.039 0.998636 184.204 0.658547 184.307 0.651824C187.536 0.436632 189.402 0.631294 192.752 0.661589C194.345 0.676575 197.503 0.627245 199.228 0.590055C200.59 0.560095 201.411 0.639796 202.667 0.588834C202.837 0.582028 202.665 0.430602 202.717 0.424772C204.119 0.2436 203.445 0.613784 203.734 0.679898C204.783 0.920323 205.431 1.04837 207.226 0.935268C207.64 0.909366 208.846 0.376354 209.6 0.345182C210.581 0.305632 210.211 0.496685 211.238 0.450406C211.326 0.446621 211.308 0.328754 211.942 0.333951C214.885 0.356525 218.093 0.425108 221.151 0.413296C221.569 0.412134 221.033 0.225181 221.637 0.220426C224.469 0.198264 227.573 0.205183 230.332 0.29269C231.012 0.314817 230.586 0.445717 230.733 0.484584C231.638 0.719754 232.922 0.378058 233.134 0.371547C238.185 0.207344 242.052 0.516574 247.2 0.369349C247.481 0.360705 249.638 -0.0055996 250.6 0.308557C250.666 0.329459 251.619 0.650873 252.461 0.431115C252.513 0.417368 251.92 0.251898 252.955 0.268762C253.991 0.285591 255.657 0.175091 257.081 0.356897C257.531 0.414168 258.596 0.73479 259.941 0.47921C260.028 0.461368 262.103 -0.116534 262.844 0.282189C262.964 0.347823 262.839 0.769763 264.443 0.553429C264.749 0.511488 264.193 0.417373 265.001 0.358605C266.238 0.26803 267.877 0.381039 269.398 0.193078C269.664 0.159802 270.793 -0.126586 271.699 0.0907829C271.84 0.124826 271.571 0.265692 272.049 0.281456C274.324 0.357075 276.706 0.26285 279.015 0.360313C279.833 0.394559 279.415 0.622284 280.268 0.68331C281.12 0.744314 282.839 0.802999 283.731 0.698934C284.623 0.594824 283.648 0.231885 284.986 0.202842C290.798 0.0767063 296.557 0.289616 302.361 0.32076C303.222 0.325411 302.508 0.19554 303.777 0.193075C308.454 0.183412 316.529 0.0616437 320.588 0.337604C323.84 0.558633 319.748 0.726906 322.233 0.81685C323.432 0.859757 324.729 0.437802 325.019 0.424517C327.846 0.289577 329.812 0.476494 332.357 0.419146C332.883 0.407246 332.367 0.236223 332.814 0.227984C334.342 0.198325 335.948 0.274661 337.408 0.260698C338.063 0.254041 337.942 0.12342 338.545 0.133501C339.987 0.156119 341.263 0.211026 342.669 0.333452C342.797 0.344607 341.933 0.507095 343 0.513139C344.726 0.522458 346.87 0.64323 348.857 0.518509C349.446 0.48099 349.469 0.182459 350.737 0.388627C351.002 0.431687 350.663 0.790157 352.139 0.480423C352.388 0.428952 354.867 0.0111778 356.084 0.280472C356.405 0.351347 357.224 0.644686 357.933 0.598586C358.029 0.59123 357.644 0.430878 358.232 0.415237C360.302 0.362904 362.472 0.380012 364.599 0.329788C365.167 0.316059 364.321 0.150127 365.167 0.134964C367.495 0.0930229 370.401 0.135272 372.678 0.187209C373.517 0.206673 372.937 0.344126 372.998 0.359084C373.98 0.602383 374.56 0.273984 374.886 0.254836C376.913 0.140175 378.457 0.294437 380.325 0.253615C380.841 0.242765 380.475 0.086181 380.578 0.0722187C381.642 -0.0642024 380.849 0.217002 381.523 0.247999C383.411 0.335768 385.515 0.323184 387.424 0.303174C388.125 0.295595 387.337 0.114032 387.966 0.109327C391.691 0.0780406 395.562 0.0954139 399.197 0.195508C399.881 0.214684 399.451 0.354493 399.594 0.386425C400.577 0.609834 402.017 0.305102 402.349 0.276074C403.856 0.143532 404.442 0.267168 405.773 0.244091C412.276 0.129194 420.306 0.211079 426.444 0.261667C434.443 0.326774 440.65 0.459777 448.278 0.425239C448.763 0.423219 448.274 0.23723 448.692 0.233101C454.088 0.188264 459.4 0.260941 464.807 0.207221C465.25 0.203142 464.611 0.0268233 465.323 0.0143502C466.783 -0.0124703 468.634 -0.00288693 470.11 0.0534121C470.831 0.0805384 469.865 0.231836 470.59 0.256048C472.278 0.312772 474.088 0.32533 475.822 0.297063C476.56 0.28465 475.446 0.104321 476.405 0.10224C482.939 0.0843489 489.356 0.0532909 495.959 0.286808C496.412 0.302845 496.809 0.669346 497.771 0.599062C497.844 0.497348 497.84 0.377702 497.872 0.268985C507.383 0.210421 516.798 0.337474 526.336 0.357117C526.738 0.357904 526.043 0.163713 526.822 0.164247C531.328 0.167117 535.704 0.11332 540.314 0.306335C540.771 0.325211 540.536 0.66684 541.884 0.615172C542.122 0.605743 544.152 0.560182 544.677 0.486021C544.748 0.474835 544.378 0.315376 545.032 0.310729C548.833 0.286514 552.816 0.322918 556.611 0.420347C557.223 0.436376 556.571 0.606186 557.007 0.619077C560.102 0.709218 563.467 0.580132 566.424 0.73431C568.403 0.838122 567.67 1.13165 568.722 1.42059C568.871 1.46135 570.096 1.46781 570.159 1.63592C570.322 2.05864 569.728 2.52152 569.972 2.9721C570.024 3.06915 571.665 2.96462 570.693 3.19915C570.625 3.21484 569.435 3.29268 569.142 3.37224C568.938 3.42725 569.306 3.59821 568.889 3.66863C568.473 3.73897 568.016 3.59566 567.326 3.67839C566.636 3.76215 566.939 3.95664 565.561 3.97966ZM188.16 1.2778C189.25 1.44112 189.41 0.842933 188.232 0.986051C188.175 0.993679 188.104 1.26979 188.16 1.2778ZM56.3555 1.37229C57.7796 1.63614 58.7542 1.24818 57.7495 1.04441C56.745 0.840863 55.9215 1.29231 56.3555 1.37229ZM41.5873 1.56492C43.2517 1.77295 43.5139 0.924692 41.731 1.09617C41.6274 1.10586 41.4901 1.55284 41.5873 1.56492ZM563.845 1.50286C563.86 1.51081 564.741 1.51855 564.762 1.51067C565.231 1.32069 563.469 1.30534 563.845 1.50286ZM26.9324 1.77464C27.4519 1.88938 28.9481 1.75692 28.3025 1.61424C27.7828 1.49945 26.2852 1.6319 26.9324 1.77464ZM244.987 1.91622C245.004 1.92513 245.636 1.93316 245.623 1.88277C245.58 1.72048 244.702 1.76629 244.987 1.91622ZM2.02472 1.7844C5.70477 1.81633 7.93585 2.51703 3.92847 2.43797C3.2027 2.42366 5.49255 2.21452 4.56885 2.15135C2.87866 2.03626 1.75641 2.47621 0.0316774 2.24046C-0.280517 2.19731 1.81464 1.78103 2.03125 1.78343C2.02905 1.78375 2.02673 1.78408 2.02472 1.7844ZM188.788 1.9963C188.809 2.00421 189.684 2.01171 189.705 2.00387C190.178 1.81396 188.417 1.79874 188.788 1.9963ZM281.84 2.28609C281.888 2.30294 283.917 2.31871 283.984 2.30318C285.042 1.99263 280.94 1.95983 281.84 2.28609ZM129.907 2.43405C128.953 2.6251 127.811 2.64759 127.051 2.40768C127.999 2.42042 128.953 2.42229 129.907 2.43405Z" fill="#FF591E"/></svg></div>
+
+  <!-- SECTION 2: Tips — centered, no tag -->
+  <div class="hp-section hp-section-center">
+    <div class="hp-section-body">
+      <div class="hp-section-content hp-align-center">
+        <h2 class="hp-h2"><i>Useful hacks to improve.</i></h2>
+        <p class="hp-p"><strong>Break your PB everyday.</strong><br/>Research-backed tips on Nutrition timing, Recovery protocols, and training tweaks. This helps you in improving that PB you are holding from the past 6 Months.</p>
+        <a href="#/articles" class="hp-btn"><span>Use Calculator</span> <i data-lucide="corner-up-right" style="width:16px;height:16px;stroke-width:1.5"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: AI Chatbot — right tag, left text + right image -->
+  <div class="hp-section hp-section-split">
+    <div class="hp-section-body hp-split-row">
+      <div class="hp-section-content hp-align-left" style="flex:1">
+        <h2 class="hp-h2"><i>Ask us anything on<br/>Sports Nutrition</i></h2>
+        <p class="hp-p">Our AI Chatbot built from Scratch, trained on 10+ years of real users data.<br/>The data tracked each and everyday in real time accurately to help us improve the output.</p>
+        <div class="hp-btn-row">
+          <a href="#/ai-chat" class="hp-btn"><span>Ask our Chatbot</span> <i data-lucide="corner-up-right" style="width:16px;height:16px;stroke-width:1.5"></i></a>
+          <span class="hp-beta-note">This is still in beta testing. If you want to access this feature, fill out this form to get access, when live.</span>
+        </div>
+      </div>
+      <div class="hp-placeholder hp-placeholder-sm"></div>
+    </div>
+    <div class="hp-tag-col hp-tag-right">
+      <div class="hp-tag">Ask my Chatbot</div>
+      <div class="hp-tag-line-v"></div>
+    </div>
+  </div>
+
+  <!-- Squiggly divider — left aligned -->
+  <div style="padding:0 48px"><svg class="squiggly-line squiggly-left" viewBox="0 0 571 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M565.561 3.97966C562.361 4.03177 558.167 3.97605 554.98 3.89958C553.981 3.87587 554.486 3.76985 553.797 3.74871C552.448 3.70749 551.191 3.75948 549.859 3.71038C549.417 3.69358 549.967 3.52565 549.504 3.51189C546.965 3.43768 544.564 3.48045 541.993 3.44475C529.328 3.26863 516.879 3.20559 504.06 3.12908C499.833 3.104 494.694 2.9516 490.328 3.01824C489.819 3.02618 490.123 3.17358 490.026 3.18572C488.505 3.37171 489.01 3.07414 488.017 3.0346C484.076 2.8785 479.693 2.86492 475.9 2.92181C474.286 2.94644 475.904 3.23922 474.28 3.07489C474.167 3.06378 474.576 2.90726 474.134 2.89056C473.13 2.85301 471.226 2.88099 470.448 2.86859C468.949 2.8439 468.701 2.84547 467.283 2.84369C465.345 2.83989 463.039 2.76208 460.96 2.79754C460.516 2.80558 461.104 2.96604 460.396 2.99334C459.687 3.02061 457.813 3.007 457.181 2.96918C456.549 2.93133 456.818 2.80521 456.706 2.7763C455.786 2.53231 453.617 2.87024 453.338 2.8786C448.252 3.021 443.89 2.82849 439.115 2.82904C435.49 2.82987 431.614 2.89342 428.165 2.88471C424.056 2.8737 420.573 2.78675 416.581 2.8017C416.16 2.80309 416.654 2.99175 416.139 2.99384C410.672 3.01579 405.244 2.99523 399.8 2.86786C399.255 2.85492 399.958 2.68928 399.413 2.66645C396.074 2.53032 390.79 2.2033 388.807 2.9245C386.545 2.89634 383.799 2.86725 381.776 2.72187C380.471 2.6283 381.738 2.44785 380.136 2.52485C379.774 2.542 380.244 2.70004 379.702 2.71381C377.42 2.77167 374.927 2.7203 372.669 2.80195C372.21 2.81893 372.335 2.96053 372.205 2.98603C371.111 3.19253 369.291 2.85117 368.894 2.82636C365.872 2.64139 363.665 2.71418 360.85 2.70966C360.197 2.70854 360.969 2.89874 360.34 2.90449C357.08 2.93175 353.702 2.9154 350.51 2.831C349.8 2.81177 350.453 2.64975 350.114 2.63227C348.617 2.55717 348.286 2.86318 346.851 2.79707C346.548 2.78352 346.719 2.64482 346.663 2.62959C345.8 2.39046 345.049 2.72928 344.827 2.73676C342.017 2.83897 340.221 2.48526 337.506 2.53535C337.181 2.5417 337.914 2.7172 337.001 2.72431C330.919 2.77276 324.487 2.72455 318.467 2.58418C317.531 2.56259 318.199 2.43075 318.14 2.4145C317.18 2.16057 316.559 2.50081 316.254 2.51362C313.846 2.60586 311.597 2.32053 309.961 2.72578C299.764 2.58515 289.614 2.81272 279.501 2.44966C279.372 2.44546 279.603 2.27789 279.346 2.27022C276.257 2.17613 276.851 2.43656 274.807 2.75508C274.292 2.83506 272.726 2.45051 272.587 2.42232C272.082 2.31844 272.606 2.06915 272.437 2.04903C271.038 1.89106 271.266 2.71551 269.379 2.71577C269.32 2.7144 269.568 2.56265 269.409 2.54756C268.917 2.50019 268.429 2.56049 267.948 2.50826C266.846 2.38738 266.453 1.98677 264.77 2.21993C264.557 2.25019 264.882 2.71785 263.197 2.69576C262.525 2.68655 259.552 2.69457 258.719 2.66426C257.886 2.63399 258.458 2.48329 258.398 2.47676C256.156 2.27748 257.006 2.19489 255.883 1.89986C254.759 1.60594 255.071 2.30697 254.613 2.38521C254.154 2.46323 252.51 2.29881 252.106 2.24166C251.702 2.18447 252.205 2.08871 251.846 2.05635C249.465 1.84494 250.801 2.40432 250.017 2.51558C248.167 2.77903 246.726 2.25915 245.033 2.20821C244.575 2.19445 244.949 2.31286 244.541 2.32393C242.925 2.36622 241.953 2.204 240.115 2.35274C239.814 2.37698 238.328 2.68955 237.366 2.46016C237.23 2.42709 237.617 2.29753 236.928 2.26851C235.899 2.22496 234.046 2.19664 232.94 2.23995C232.123 2.27199 233.059 2.48546 232.031 2.41915C231.575 2.38954 232.421 2.26465 231.563 2.21944C230.71 2.17424 228.527 2.17973 227.697 2.18404C226.868 2.18845 227.322 2.35038 227.255 2.36129C226.849 2.42378 225.258 2.50186 225.118 2.50167C218.027 2.52144 211.488 2.24849 204.584 2.33883C204.042 2.34568 204.403 2.51644 204.32 2.51925C202.466 2.59079 203.928 2.13679 202.632 1.98483C202.82 2.33134 202.055 2.2686 200.748 2.3066C200.118 2.3252 200.461 2.45937 200.404 2.47311C199.47 2.6769 198.82 2.41367 198.653 2.35983C198.034 2.16174 197.361 2.39579 196.941 2.26339C196.52 2.13198 197.488 1.93716 196.235 1.93966C195.884 2.0637 196.814 2.38786 195.862 2.44039C192.273 2.63911 185.573 2.38478 182.686 2.35836C179.806 2.33197 178.876 2.35485 177.197 2.31002C174.166 2.22897 175.277 2.46947 173.394 2.57955C171.506 2.68962 172.424 2.09788 172.153 1.97067C171.886 1.84352 171.595 1.97441 171.264 1.90451C170.934 1.83462 171.649 1.74813 170.872 1.72189C170.095 1.69568 167.969 1.92189 167.694 2.0549C167.111 2.33669 168.069 2.63245 166.012 2.52853C165.894 2.52236 166.278 2.36676 165.825 2.35104C162.228 2.23125 158.49 2.22383 154.897 2.11789C154.403 2.10308 154.845 1.92998 154.557 1.9194C151.562 1.80868 152.633 2.10055 150.992 2.42477C151.36 1.9933 150.452 1.72932 148.18 1.72677C146.813 1.72509 147.048 1.91354 146.165 2.04635C145.9 2.08639 144.933 1.957 144.758 2.04562C144.18 2.33532 145.091 2.65962 142.747 2.53048C142.644 2.52435 142.972 2.36577 142.616 2.35617C140.32 2.29331 140.045 2.59633 137.563 2.63302C135.617 2.66182 132.157 2.47704 129.941 2.44699C129.988 1.96189 127.896 2.07297 127.047 2.40744C125.609 2.39375 124.056 2.41265 122.666 2.36642C122.188 2.35066 122.502 2.21021 122.442 2.19504C121.517 1.95698 120.892 2.28238 120.582 2.29513C117.218 2.41914 114.478 2.17252 111.268 2.41354C111.154 2.42222 110.969 2.75919 110.111 2.51315C110.056 2.49619 111.116 2.34288 109.606 2.33102C108.096 2.31914 105.249 2.1385 103.152 2.29465C102.644 2.33224 101.361 2.60579 100.331 2.39206C100.194 2.36304 100.344 2.2664 100.146 2.21262C99.5056 2.04126 99.1559 2.38185 98.4033 2.0925C97.6507 1.80317 96.0853 1.58648 93.9707 1.78611C93.9034 1.79191 93.4028 2.06186 92.7379 2.05759C91.6763 2.05054 90.1694 1.99431 89.0611 1.99607C88.5304 1.99701 88.8701 2.16463 88.7779 2.1677C85.2096 2.26163 82.6702 2.11219 78.8475 2.04734C78.1469 2.03512 76.133 2.2637 74.7765 2.08298C73.2868 1.88515 74.8177 1.06222 71.3937 1.25828C70.0127 1.3367 68.2644 2.38074 65.7827 1.83982C60.9696 1.97386 56.5184 1.69702 51.692 1.8884C51.4749 1.89688 50.7886 2.18827 50.2783 2.1843C49.5208 2.17785 49.1049 2.04166 48.564 2.03269C46.2977 1.99167 44.2234 2.10819 42.0381 2.09006C41.2086 2.08348 41.4985 1.94266 40.5091 1.93479C39.5201 1.92705 38.8607 2.11248 37.5206 2.02293C36.5084 1.95466 35.4966 1.57565 34.1531 1.53147C34.1018 1.90533 33.1793 1.89763 31.5392 1.99632C31.2241 2.01546 31.562 2.14558 31.4129 2.16135C30.8061 2.22842 30.2444 2.12058 29.6682 2.19358C29.5281 2.21111 29.5214 2.33879 29.4068 2.36033C28.4325 2.54835 26.8268 2.26116 26.5512 2.21116C25.4943 2.02126 25.0007 2.18731 24.19 2.11253C23.3808 2.03775 24.5908 1.94428 23.6454 1.8989C21.6861 1.80505 19.1684 1.82567 17.1784 1.8198C16.3844 1.81825 16.926 1.98868 16.8125 1.99241C15.1705 2.03564 13.5103 1.85435 12.5999 2.19383C11.4615 1.31607 11.6097 2.27896 9.26282 2.10325C9.07794 2.08904 8.8429 1.67396 9.55255 1.61302C10.2623 1.55214 11.3384 1.68189 12.3232 1.58689C12.5565 1.5646 13.8923 1.17564 14.0745 1.15208C15.5021 0.967941 15.7045 1.58823 15.78 1.62229C16.6365 1.98996 18.2689 1.57093 18.6988 1.54197C20.6653 1.4093 22.3361 1.49653 23.9809 1.40184C25.0567 1.34063 25.1619 0.934321 26.0067 0.946759C28.8146 0.987865 29.795 1.55467 32.441 1.06321C33.0084 0.958395 32.4446 0.51431 34.4777 0.863506C34.6054 0.88552 36.1147 1.20497 36.9869 1.00291C37.0964 0.977433 37.0931 0.848011 37.2374 0.837139C38.2055 0.766813 38.8511 0.869919 39.9057 0.820537C40.9603 0.771156 42.2282 0.697539 43.4322 0.741436C44.1578 0.767684 45.0888 1.00882 45.4362 1.06785C46.4167 1.23791 47.4686 0.959081 48.0761 1.16502C48.6888 1.37199 47.491 1.68631 49.0977 1.82004C49.1572 1.4838 49.2938 1.13867 49.3896 0.800517C52.9106 0.812356 56.3752 0.921084 59.9081 0.906228C60.3462 0.90405 59.8981 0.723282 60.3677 0.716288C62.3487 0.68757 64.079 0.816433 66.1334 0.765115C67.7236 0.7247 69.4673 0.533306 71.1302 0.485086C72.146 0.869848 74.6132 0.73923 76.4058 0.774391C77.0337 0.786541 76.9917 0.889303 77.4382 0.922828C79.1228 1.04682 78.3335 0.706807 78.7952 0.653298C80.7766 0.424931 80.9463 1.19453 83.2823 1.17551C83.4061 1.17477 84.9189 0.764537 85.1273 0.73899C86.4511 0.572408 85.3464 0.881775 86.175 0.912086C87.6878 0.967476 88.7389 1.06545 90.5139 0.945288C91.0315 0.909698 92.2729 0.654007 93.2781 0.851782C93.4103 0.87768 93.3372 1.01328 93.4436 1.02122C95.37 1.15358 95.4207 0.727524 96.5214 0.583228C97.6224 0.438964 99.3229 0.733079 99.6689 0.817846C100.574 1.03713 98.9752 0.911562 98.9261 0.93308C98.3503 1.18917 99.5903 1.14508 100.538 1.16672C100.675 1.58448 102 1.5594 101.52 1.18747C101.466 1.14685 100.728 1.18581 100.538 1.16672C101.37 0.756847 102.826 0.704354 104.435 1.08738C105.188 1.26689 104.476 1.4762 106.763 1.39963C107.801 1.36507 107.4 1.07742 108.316 0.998997C110.409 0.820069 113.129 1.08839 115.287 1.04612C116.07 1.03077 115.307 0.873311 115.842 0.857396C117.262 0.814666 118.515 0.932808 119.941 0.872288C120.071 0.866605 119.755 0.701781 120.198 0.699681C123.561 0.680539 126.489 0.786109 130 0.789035C131.697 0.790374 134.73 0.69947 136.487 0.717746C139.533 0.748449 143.28 0.988128 145.882 0.929903C147.579 0.892632 147.206 0.727774 147.933 0.61545C149.337 0.39772 151.82 0.787725 152.155 0.848115C152.165 0.850114 150.705 0.888978 151.484 0.973603C151.937 1.14993 152.138 0.84888 152.155 0.848115C152.374 0.887128 155.291 0.924551 155.871 0.893037C156.185 0.875815 156.009 0.719621 156.173 0.713594C160.074 0.573815 163.982 0.534117 167.938 0.607148C168.008 0.610303 167.903 0.785015 168.066 0.790253C170.357 0.867933 171.823 0.654206 173.712 0.527314C175.601 0.400477 177.099 0.442958 178.217 0.742889C179.642 0.705125 181.686 0.837723 182.863 0.918181C184.039 0.998636 184.204 0.658547 184.307 0.651824C187.536 0.436632 189.402 0.631294 192.752 0.661589C194.345 0.676575 197.503 0.627245 199.228 0.590055C200.59 0.560095 201.411 0.639796 202.667 0.588834C202.837 0.582028 202.665 0.430602 202.717 0.424772C204.119 0.2436 203.445 0.613784 203.734 0.679898C204.783 0.920323 205.431 1.04837 207.226 0.935268C207.64 0.909366 208.846 0.376354 209.6 0.345182C210.581 0.305632 210.211 0.496685 211.238 0.450406C211.326 0.446621 211.308 0.328754 211.942 0.333951C214.885 0.356525 218.093 0.425108 221.151 0.413296C221.569 0.412134 221.033 0.225181 221.637 0.220426C224.469 0.198264 227.573 0.205183 230.332 0.29269C231.012 0.314817 230.586 0.445717 230.733 0.484584C231.638 0.719754 232.922 0.378058 233.134 0.371547C238.185 0.207344 242.052 0.516574 247.2 0.369349C247.481 0.360705 249.638 -0.0055996 250.6 0.308557C250.666 0.329459 251.619 0.650873 252.461 0.431115C252.513 0.417368 251.92 0.251898 252.955 0.268762C253.991 0.285591 255.657 0.175091 257.081 0.356897C257.531 0.414168 258.596 0.73479 259.941 0.47921C260.028 0.461368 262.103 -0.116534 262.844 0.282189C262.964 0.347823 262.839 0.769763 264.443 0.553429C264.749 0.511488 264.193 0.417373 265.001 0.358605C266.238 0.26803 267.877 0.381039 269.398 0.193078C269.664 0.159802 270.793 -0.126586 271.699 0.0907829C271.84 0.124826 271.571 0.265692 272.049 0.281456C274.324 0.357075 276.706 0.26285 279.015 0.360313C279.833 0.394559 279.415 0.622284 280.268 0.68331C281.12 0.744314 282.839 0.802999 283.731 0.698934C284.623 0.594824 283.648 0.231885 284.986 0.202842C290.798 0.0767063 296.557 0.289616 302.361 0.32076C303.222 0.325411 302.508 0.19554 303.777 0.193075C308.454 0.183412 316.529 0.0616437 320.588 0.337604C323.84 0.558633 319.748 0.726906 322.233 0.81685C323.432 0.859757 324.729 0.437802 325.019 0.424517C327.846 0.289577 329.812 0.476494 332.357 0.419146C332.883 0.407246 332.367 0.236223 332.814 0.227984C334.342 0.198325 335.948 0.274661 337.408 0.260698C338.063 0.254041 337.942 0.12342 338.545 0.133501C339.987 0.156119 341.263 0.211026 342.669 0.333452C342.797 0.344607 341.933 0.507095 343 0.513139C344.726 0.522458 346.87 0.64323 348.857 0.518509C349.446 0.48099 349.469 0.182459 350.737 0.388627C351.002 0.431687 350.663 0.790157 352.139 0.480423C352.388 0.428952 354.867 0.0111778 356.084 0.280472C356.405 0.351347 357.224 0.644686 357.933 0.598586C358.029 0.59123 357.644 0.430878 358.232 0.415237C360.302 0.362904 362.472 0.380012 364.599 0.329788C365.167 0.316059 364.321 0.150127 365.167 0.134964C367.495 0.0930229 370.401 0.135272 372.678 0.187209C373.517 0.206673 372.937 0.344126 372.998 0.359084C373.98 0.602383 374.56 0.273984 374.886 0.254836C376.913 0.140175 378.457 0.294437 380.325 0.253615C380.841 0.242765 380.475 0.086181 380.578 0.0722187C381.642 -0.0642024 380.849 0.217002 381.523 0.247999C383.411 0.335768 385.515 0.323184 387.424 0.303174C388.125 0.295595 387.337 0.114032 387.966 0.109327C391.691 0.0780406 395.562 0.0954139 399.197 0.195508C399.881 0.214684 399.451 0.354493 399.594 0.386425C400.577 0.609834 402.017 0.305102 402.349 0.276074C403.856 0.143532 404.442 0.267168 405.773 0.244091C412.276 0.129194 420.306 0.211079 426.444 0.261667C434.443 0.326774 440.65 0.459777 448.278 0.425239C448.763 0.423219 448.274 0.23723 448.692 0.233101C454.088 0.188264 459.4 0.260941 464.807 0.207221C465.25 0.203142 464.611 0.0268233 465.323 0.0143502C466.783 -0.0124703 468.634 -0.00288693 470.11 0.0534121C470.831 0.0805384 469.865 0.231836 470.59 0.256048C472.278 0.312772 474.088 0.32533 475.822 0.297063C476.56 0.28465 475.446 0.104321 476.405 0.10224C482.939 0.0843489 489.356 0.0532909 495.959 0.286808C496.412 0.302845 496.809 0.669346 497.771 0.599062C497.844 0.497348 497.84 0.377702 497.872 0.268985C507.383 0.210421 516.798 0.337474 526.336 0.357117C526.738 0.357904 526.043 0.163713 526.822 0.164247C531.328 0.167117 535.704 0.11332 540.314 0.306335C540.771 0.325211 540.536 0.66684 541.884 0.615172C542.122 0.605743 544.152 0.560182 544.677 0.486021C544.748 0.474835 544.378 0.315376 545.032 0.310729C548.833 0.286514 552.816 0.322918 556.611 0.420347C557.223 0.436376 556.571 0.606186 557.007 0.619077C560.102 0.709218 563.467 0.580132 566.424 0.73431C568.403 0.838122 567.67 1.13165 568.722 1.42059C568.871 1.46135 570.096 1.46781 570.159 1.63592C570.322 2.05864 569.728 2.52152 569.972 2.9721C570.024 3.06915 571.665 2.96462 570.693 3.19915C570.625 3.21484 569.435 3.29268 569.142 3.37224C568.938 3.42725 569.306 3.59821 568.889 3.66863C568.473 3.73897 568.016 3.59566 567.326 3.67839C566.636 3.76215 566.939 3.95664 565.561 3.97966ZM188.16 1.2778C189.25 1.44112 189.41 0.842933 188.232 0.986051C188.175 0.993679 188.104 1.26979 188.16 1.2778ZM56.3555 1.37229C57.7796 1.63614 58.7542 1.24818 57.7495 1.04441C56.745 0.840863 55.9215 1.29231 56.3555 1.37229ZM41.5873 1.56492C43.2517 1.77295 43.5139 0.924692 41.731 1.09617C41.6274 1.10586 41.4901 1.55284 41.5873 1.56492ZM563.845 1.50286C563.86 1.51081 564.741 1.51855 564.762 1.51067C565.231 1.32069 563.469 1.30534 563.845 1.50286ZM26.9324 1.77464C27.4519 1.88938 28.9481 1.75692 28.3025 1.61424C27.7828 1.49945 26.2852 1.6319 26.9324 1.77464ZM244.987 1.91622C245.004 1.92513 245.636 1.93316 245.623 1.88277C245.58 1.72048 244.702 1.76629 244.987 1.91622ZM2.02472 1.7844C5.70477 1.81633 7.93585 2.51703 3.92847 2.43797C3.2027 2.42366 5.49255 2.21452 4.56885 2.15135C2.87866 2.03626 1.75641 2.47621 0.0316774 2.24046C-0.280517 2.19731 1.81464 1.78103 2.03125 1.78343C2.02905 1.78375 2.02673 1.78408 2.02472 1.7844ZM188.788 1.9963C188.809 2.00421 189.684 2.01171 189.705 2.00387C190.178 1.81396 188.417 1.79874 188.788 1.9963ZM281.84 2.28609C281.888 2.30294 283.917 2.31871 283.984 2.30318C285.042 1.99263 280.94 1.95983 281.84 2.28609ZM129.907 2.43405C128.953 2.6251 127.811 2.64759 127.051 2.40768C127.999 2.42042 128.953 2.42229 129.907 2.43405Z" fill="#FF591E"/></svg></div>
+
+  <!-- SECTION 4: Endurance — left tag, image left + text right -->
+  <div class="hp-section hp-section-split">
+    <div class="hp-tag-col hp-tag-left hp-tag-top-h">
+      <div class="hp-tag">Learn</div>
+      <div class="hp-tag-line-h"></div>
+    </div>
+    <div class="hp-section-body hp-split-row hp-split-reverse">
+      <div class="hp-placeholder hp-placeholder-sm"></div>
+      <div class="hp-section-content hp-align-left" style="flex:1">
+        <h2 class="hp-h2"><i>Start Endurance<br/>journey Smartly.</i></h2>
+        <p class="hp-p">Your first 100kms of ride or Half Marathon under 2hrs, we got you covered. Training is just not about consistency but also about doing it in a smart way.</p>
+        <a href="#/endurance" class="hp-btn" style="align-self:flex-end"><span>Explore Endurance Guide</span> <i data-lucide="corner-up-right" style="width:16px;height:16px;stroke-width:1.5"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER SECTION — t-90.Club branding -->
+  <div class="hp-footer-section">
+    <div class="hp-footer-inner">
+      <div class="hp-footer-left">
+        <h2 class="hp-footer-title"><i>t-90.Club</i></h2>
+        <p class="hp-footer-desc">Not your go to club. This club is not for everyone. This is not a 1km run and spending 3 hrs in that coffee sharing. This is about crushing your alter ego and be proud of yourself even when no one is looking for !!</p>
+      </div>
+      <div class="hp-footer-card">
+        <p class="hp-footer-quote"><i>Built for those,<br/><strong>who are not afraid of the dark.</strong></i></p>
+        <p class="hp-footer-credit mono">PRODUCT DESIGNED AND CREATED BY<br/>YOUR OWN FELLOW ENDURANCE GUY !!</p>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- ============ CALCULATOR HUB ============ -->
 <section class="page" data-page="/calculators">
-  <div class="page-head">
-    <div class="container">
-      <div class="eyebrow">Calculators</div>
-      <h1>13 tools.<br/>Pick one. Get an answer.</h1>
-      <p class="lede muted">Inputs stay in your browser. No accounts. No tracking. Runners and cyclists, nutrition and performance.</p>
-      <div class="filter-row">
-        <input id="q" class="filter-input" type="search" placeholder="Filter — try 'pace', 'FTP', 'carbs'…" aria-label="Filter calculators"/>
-        <span class="mono muted" id="count">13 tools</span>
+  <div class="dash">
+    <aside class="dash-side">
+      <div class="dash-side-head">
+        <h2>Calculators</h2>
+        <p class="muted" style="font-size:.86rem;margin:0">Know the numbers, improve the stats!</p>
       </div>
-    </div>
-  </div>
-  <div id="calc-hub-cats"></div>
-</section>
+      <nav class="dash-nav" id="dash-nav"></nav>
+    </aside>
+    <div class="dash-main" id="dash-main">
+      <div class="dash-panel is-active" data-calc="welcome">
+        <div class="dash-welcome">
+          <h1>Want to Beat your Alter Ego?</h1>
+          <p class="muted">Select a category from the sidebar, then pick a calculator.</p>
+        </div>
+      </div>
+      <div class="dash-panel" data-calc="empty">
+        <div class="dash-detail" id="empty-detail"></div>
+      </div>
 
-<!-- ============ CALC: daily-fuel ============ -->
-<section class="page" data-page="/calculators/daily-fuel">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow">Fueling & nutrition</div>
-    <h1>Daily fuel needs</h1>
-    <p class="calc-lede">Calories you actually need today — BMR, lifestyle activity, and the energy cost of training.</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="calc-card-wrap">
+      <div class="dash-panel" data-calc="daily-fuel">
+        <div class="dash-detail-head">
+          <div>
+            <span class="mono muted">Fueling & nutrition</span>
+            <h2>Daily fuel needs</h2>
+            <p class="muted" style="margin:var(--s-2) 0 0">Calories you actually need on training days.</p>
+          </div>
+        </div>
+        <div class="dash-calc-embed" style="margin-top:var(--s-5)">
+          <div class="calc-card-wrap">
       <div class="calc-form">
         <div class="seg-group" data-group="df-sex">
           <label class="seg active"><input type="radio" name="df-sex" value="male" checked/><span>Male</span></label>
@@ -332,25 +223,19 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
         </div>
       </div>
     </div>
-    <details class="notes"><summary>Formula & limits</summary>
-      <p><strong>BMR</strong> — Mifflin–St Jeor (1990): male <code>10W + 6.25H − 5A + 5</code>, female <code>10W + 6.25H − 5A − 161</code>.</p>
-      <p><strong>NEAT</strong> = BMR × (lifestyle factor − 1). <strong>Training kcal</strong> = MET × kg × hours. Run easy ~9 MET, tempo ~11, intervals ~13. Cycle easy ~6, tempo ~8, threshold+ ~11.</p>
-      <p><strong>Macro split</strong>: endurance default 55% carbs / 20% protein / 25% fat.</p>
-      <p class="muted">Estimates. Individual variance is ±10–15%.</p>
-    </details>
-  </div></div>
-</section>
+        </div>
+      </div>
 
-<!-- ============ CALC: during-workout-carbs ============ -->
-<section class="page" data-page="/calculators/during-workout-carbs">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow">Fueling & nutrition</div>
-    <h1>During-workout carbs</h1>
-    <p class="calc-lede">Grams of carbohydrate per hour — scaled by duration, intensity, and gut training.</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="calc-card-wrap">
+      <div class="dash-panel" data-calc="during-workout-carbs">
+        <div class="dash-detail-head">
+          <div>
+            <span class="mono muted">Fueling & nutrition</span>
+            <h2>During-workout carbs</h2>
+            <p class="muted" style="margin:var(--s-2) 0 0">g/hr fueling target by duration.</p>
+          </div>
+        </div>
+        <div class="dash-calc-embed" style="margin-top:var(--s-5)">
+          <div class="calc-card-wrap">
       <div class="calc-form">
         <div class="row cols-3">
           <label class="field"><span class="field-row">Duration <em>hr</em></span><input id="dw-dur" type="number" step="0.25" min="0.25" max="12" value="3"/></label>
@@ -385,27 +270,19 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
         </div>
       </div>
     </div>
-    <details class="notes"><summary>Formula & limits</summary>
-      <pre>&lt; 60 min       no carbs (mouth rinse optional)
-60–150 min     30–60 g/hr  (glucose alone)
-150–180 min    60–75 g/hr  (glucose + fructose ~2:1)
-&gt; 180 min      75–90 g/hr  (multiple transportable)
-Race / trained 90–120 g/hr (advanced gut training)</pre>
-      <p class="muted">Practice race-day fueling in training. The upper end requires weeks of gut adaptation.</p>
-    </details>
-  </div></div>
-</section>
+        </div>
+      </div>
 
-<!-- ============ CALC: race-predictor ============ -->
-<section class="page" data-page="/calculators/race-predictor">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow">Running performance</div>
-    <h1>Race time predictor</h1>
-    <p class="calc-lede">One known race time. Predicted times across every common distance, using Riegel's formula.</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="calc-card-wrap">
+      <div class="dash-panel" data-calc="race-predictor">
+        <div class="dash-detail-head">
+          <div>
+            <span class="mono muted">Running performance</span>
+            <h2>Race time predictor</h2>
+            <p class="muted" style="margin:var(--s-2) 0 0">Riegel formula across 5K → marathon.</p>
+          </div>
+        </div>
+        <div class="dash-calc-embed" style="margin-top:var(--s-5)">
+          <div class="calc-card-wrap">
       <div class="calc-form">
         <div class="row cols-2">
           <label class="field"><span class="field-row">Known distance</span>
@@ -429,23 +306,19 @@ Race / trained 90–120 g/hr (advanced gut training)</pre>
         </div>
       </div>
     </div>
-    <details class="notes"><summary>Formula & limits</summary>
-      <pre>T₂ = T₁ × (D₂ / D₁) ^ 1.06   (Riegel, 1981)</pre>
-      <p class="muted">Most accurate within ~3× of the known distance. Marathon-specific endurance (long-run base, fueling) isn't captured.</p>
-    </details>
-  </div></div>
-</section>
+        </div>
+      </div>
 
-<!-- ============ CALC: vdot-paces ============ -->
-<section class="page" data-page="/calculators/vdot-paces">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow">Running performance</div>
-    <h1>VDOT training paces</h1>
-    <p class="calc-lede">Jack Daniels' training paces — Easy, Marathon, Threshold, Interval, Repetition — from a recent race.</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="calc-card-wrap">
+      <div class="dash-panel" data-calc="vdot-paces">
+        <div class="dash-detail-head">
+          <div>
+            <span class="mono muted">Running performance</span>
+            <h2>VDOT training paces</h2>
+            <p class="muted" style="margin:var(--s-2) 0 0">Daniels' Easy / Threshold / Interval paces.</p>
+          </div>
+        </div>
+        <div class="dash-calc-embed" style="margin-top:var(--s-5)">
+          <div class="calc-card-wrap">
       <div class="calc-form">
         <div class="row cols-2">
           <label class="field"><span class="field-row">Race distance</span>
@@ -478,26 +351,19 @@ Race / trained 90–120 g/hr (advanced gut training)</pre>
         </div>
       </div>
     </div>
-    <details class="notes"><summary>Formula & limits</summary>
-      <pre>VO₂  = −4.6 + 0.182258·v + 0.000104·v²    (v in m/min)
-%max = 0.8 + 0.1894393·e^(−0.012778·t)
-            + 0.2989558·e^(−0.1932605·t)   (t in min)
-VDOT = VO₂ / %max
-Zone %VDOT: E 70 · M 84 · T 88 · I 97 · R 105</pre>
-    </details>
-  </div></div>
-</section>
+        </div>
+      </div>
 
-<!-- ============ CALC: ftp-zones ============ -->
-<section class="page" data-page="/calculators/ftp-zones">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow">Cycling performance</div>
-    <h1>FTP power zones</h1>
-    <p class="calc-lede">Coggan's 7-zone power breakdown from your Functional Threshold Power.</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="calc-card-wrap">
+      <div class="dash-panel" data-calc="ftp-zones">
+        <div class="dash-detail-head">
+          <div>
+            <span class="mono muted">Cycling performance</span>
+            <h2>FTP power zones</h2>
+            <p class="muted" style="margin:var(--s-2) 0 0">Coggan 7-zone power breakdown.</p>
+          </div>
+        </div>
+        <div class="dash-calc-embed" style="margin-top:var(--s-5)">
+          <div class="calc-card-wrap">
       <div class="calc-form">
         <div class="row cols-1"><label class="field"><span class="field-row">FTP <em>watts</em></span><input id="fz-ftp" type="number" min="50" max="600" step="1" value="250"/></label></div>
       </div>
@@ -511,29 +377,19 @@ Zone %VDOT: E 70 · M 84 · T 88 · I 97 · R 105</pre>
         </div>
       </div>
     </div>
-    <details class="notes"><summary>Formula & limits</summary>
-      <pre>Z1 Active Recovery    &lt; 55% FTP
-Z2 Endurance         56–75%
-Z3 Tempo             76–90%
-Z4 Threshold        91–105%
-Z5 VO₂ max         106–120%
-Z6 Anaerobic       121–150%
-Z7 Neuromuscular     &gt; 150%</pre>
-      <p class="muted">FTP ≈ highest power sustained for ~1 hour. Estimate via 20-min test × 0.95.</p>
-    </details>
-  </div></div>
-</section>
+        </div>
+      </div>
 
-<!-- ============ CALC: w-per-kg ============ -->
-<section class="page" data-page="/calculators/w-per-kg">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow">Cycling performance</div>
-    <h1>W/kg power-to-weight</h1>
-    <p class="calc-lede">The number that matters on every climb. FTP ÷ weight, mapped to rider category.</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="calc-card-wrap">
+      <div class="dash-panel" data-calc="w-per-kg">
+        <div class="dash-detail-head">
+          <div>
+            <span class="mono muted">Cycling performance</span>
+            <h2>W/kg power-to-weight</h2>
+            <p class="muted" style="margin:var(--s-2) 0 0">Climbing category by W/kg.</p>
+          </div>
+        </div>
+        <div class="dash-calc-embed" style="margin-top:var(--s-5)">
+          <div class="calc-card-wrap">
       <div class="calc-form">
         <div class="seg-group" data-group="wp-sex">
           <label class="seg active"><input type="radio" name="wp-sex" value="male" checked/><span>Male</span></label>
@@ -560,32 +416,18 @@ Z7 Neuromuscular     &gt; 150%</pre>
         </div>
       </div>
     </div>
-  </div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
-<!-- ============ STUB (handles all 7 soon calcs) ============ -->
-<section class="page" data-page="/calculators/_stub">
-  <div class="calc-page-head"><div class="container-narrow">
-    <a href="#/calculators" class="calc-back">← All calculators</a>
-    <div class="eyebrow" id="stub-cat">—</div>
-    <h1 id="stub-name">—</h1>
-    <p class="calc-lede" id="stub-desc">—</p>
-  </div></div>
-  <div class="section-tight"><div class="container-narrow">
-    <div class="soon-card">
-      <div class="soon-badge">In the build queue</div>
-      <h2>Not built yet.</h2>
-      <p>This calculator is part of the v1 roadmap and will land here once the formula and chart are dialled in. The page exists so the route works and so you know it's coming.</p>
-      <p class="muted">In the meantime, six calculators are <span class="status live">Live</span> and ready to use.</p>
-      <a href="#/calculators" class="btn">← Back to all calculators</a>
-    </div>
-  </div></div>
-</section>
 
 <!-- ============ ARTICLES ============ -->
 <section class="page" data-page="/articles">
   <div class="page-head"><div class="container-narrow">
-    <div class="eyebrow">Articles</div>
+    
     <h1>Sports nutrition,<br/>cut to the bone.</h1>
     <p class="lede muted">Short articles on the nutrition questions endurance athletes actually ask. Coming soon.</p>
   </div></div>
@@ -597,43 +439,75 @@ Z7 Neuromuscular     &gt; 150%</pre>
 <!-- ============ ABOUT ============ -->
 <section class="page" data-page="/about">
   <div class="page-head"><div class="container-narrow">
-    <div class="eyebrow">About</div>
-    <h1>About t90.club</h1>
-    <p class="lede muted">A clean, free toolbox of endurance calculators — built because every existing one wants your email first.</p>
+    
+    <h1>What's t-90.club?</h1>
+    <p class="lede muted">A platform built for serious people who want to crush their alter-ego and be the best of yourself. Here you are just competing with yourself, crushing that goal you built and finally be the GOAT of all time.</p>
   </div></div>
   <div class="section-tight"><div class="container-narrow prose-long">
-    <h2>What this is</h2><p class="placeholder">[Placeholder] What t90.club is, in plain words.</p>
-    <h2>Why it exists</h2><p class="placeholder">[Placeholder] The origin story.</p>
-    <h2>The principles</h2>
-    <ol>
-      <li><strong>Fast</strong> — <span class="placeholder">[copy]</span></li>
-      <li><strong>Private</strong> — <span class="placeholder">[copy]</span></li>
-      <li><strong>Honest</strong> — <span class="placeholder">[copy]</span></li>
-      <li><strong>Free</strong> — <span class="placeholder">[copy]</span></li>
-    </ol>
-    <h2>Get in touch</h2><p class="placeholder">[Placeholder] Email / social.</p>
+    <h2>Have any suggestion?</h2>
+    <p>We'd love to hear from you. Share your ideas, feedback, or feature requests — we're building this for athletes like you.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP5dinxRmbtWZ_BJlsulX4HRYDRECbgqMQuu14H9ob_Kkq1Q/viewform?usp=header" target="_blank" rel="noopener" class="btn">Click here to share →</a>
   </div></div>
 </section>
 
 <!-- ============ CREATOR ============ -->
 <section class="page" data-page="/creator">
   <div class="page-head"><div class="container-narrow">
-    <div class="eyebrow">Meet the Creator</div>
-    <h1>Hi, I'm <span class="placeholder">[Name]</span>.</h1>
-    <p class="lede muted">A solo builder making the tool I wished existed when I was training.</p>
+    <h1>Hi, I'm Avishek Nayak.</h1>
+    <p class="lede muted">Cyclist & Sports Nutritionist</p>
   </div></div>
-  <div class="section-tight"><div class="container-narrow prose-long">
-    <h2>Who I am</h2><p class="placeholder">[Placeholder]</p>
-    <h2>Why I built this</h2><p class="placeholder">[Placeholder]</p>
-    <h2>Find me</h2>
-    <ul style="padding-left:1.1rem"><li><span class="placeholder">[link]</span> — email</li><li><span class="placeholder">[link]</span> — twitter / x</li><li><span class="placeholder">[link]</span> — strava</li></ul>
+  <div class="section-tight"><div class="container-narrow">
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:var(--s-7);align-items:start">
+      <div style="aspect-ratio:1/1.1;border:2px dashed var(--line);border-radius:var(--radius-lg);background:var(--canvas-2);display:flex;align-items:center;justify-content:center;color:var(--muted-2);font-family:var(--font-mono);font-size:.86rem">[ photo ]</div>
+      <div>
+        <h2 style="margin-bottom:var(--s-5)">Find me here</h2>
+        <ul style="padding-left:1.1rem;list-style:none">
+          <li style="margin-bottom:var(--s-3)"><a href="https://www.instagram.com/avisheknayak.13/" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">Instagram</a> — @avisheknayak.13</li>
+          <li style="margin-bottom:var(--s-3)"><a href="https://wa.me/918260646662" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">WhatsApp</a> — Send a message</li>
+          <li style="margin-bottom:var(--s-3)"><a href="https://www.strava.com/athletes/85283746" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">Strava</a> — Follow my rides</li>
+        </ul>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+
+<!-- ============ AI CHAT (stub) ============ -->
+<section class="page" data-page="/ai-chat">
+  <div class="page-head"><div class="container-narrow">
+    <h1>AI Chatbot</h1>
+    <p class="lede muted">Ask me anything on Sports Nutrition.</p>
+  </div></div>
+  <div class="section-tight"><div class="container-narrow">
+    <div class="soon-card">
+      <div class="soon-badge">Building</div>
+      <h2>Coming soon.</h2>
+      <p>The AI chatbot is being trained on a sports nutrition knowledge base. It'll answer your questions here once ready.</p>
+      <a href="#/" class="btn">← Back home</a>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ ENDURANCE JOURNEY (stub) ============ -->
+<section class="page" data-page="/endurance">
+  <div class="page-head"><div class="container-narrow">
+    <h1>First 100 km Ride or Half Marathon under 2hrs</h1>
+    <p class="lede muted">Start your endurance journey smartly.</p>
+  </div></div>
+  <div class="section-tight"><div class="container-narrow">
+    <div class="soon-card">
+      <div class="soon-badge">Building</div>
+      <h2>Coming soon.</h2>
+      <p>Structured plans, pacing guides, and fueling strategies for your first big endurance milestone. In the works.</p>
+      <a href="#/" class="btn">← Back home</a>
+    </div>
   </div></div>
 </section>
 
 <!-- ============ 404 ============ -->
 <section class="page" data-page="/404">
   <div class="page-head"><div class="container-narrow">
-    <div class="eyebrow">404</div>
+    
     <h1>Page not found.</h1>
     <p class="lede muted">That route doesn't exist. <a href="#/calculators" style="border-bottom:1px solid currentColor">Back to calculators</a>.</p>
   </div></div>
@@ -642,30 +516,19 @@ Z7 Neuromuscular     &gt; 150%</pre>
 </main>
 
 <footer class="site-footer">
-  <div class="footer-inner">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s-7);padding:var(--s-8) 48px;max-width:1440px;margin:0 auto;flex-wrap:wrap">
     <div>
-      <div class="logo"><span class="logo-mark">t90</span><span class="logo-dot">·</span><span class="logo-tld">club</span></div>
-      <p class="muted">Calculators for endurance athletes.<br/>No accounts. No devices. No tracking.</p>
+      <img src="data:image/png;base64,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" alt="T-90" style="height:44px;width:auto;filter:brightness(0) invert(1);display:block;margin-bottom:var(--s-4)"/>
+      <p style="color:rgba(255,255,255,0.75);margin:0;font-size:14px;max-width:360px">Can you Beat your Alter Ego? Select your goal and beat your Alter Ego.</p>
     </div>
-    <div class="footer-cols">
-      <div>
-        <div class="eyebrow">Tools</div>
-        <a href="#/calculators">All calculators</a>
-        <a href="#/calculators/daily-fuel">Daily fuel</a>
-        <a href="#/calculators/ftp-zones">FTP zones</a>
-        <a href="#/calculators/race-predictor">Race predictor</a>
-      </div>
-      <div>
-        <div class="eyebrow">Read</div>
-        <a href="#/articles">Articles</a>
-        <a href="#/about">About t90.club</a>
-        <a href="#/creator">Meet the creator</a>
-      </div>
+    <div style="display:flex;gap:var(--s-5);flex-wrap:wrap;align-items:flex-start;padding-top:var(--s-2)">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP5dinxRmbtWZ_BJlsulX4HRYDRECbgqMQuu14H9ob_Kkq1Q/viewform?usp=header" target="_blank" rel="noopener" class="footer-link">Feedback</a>
+      <a href="https://www.instagram.com/avisheknayak.13/" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+      <a href="https://x.com" target="_blank" rel="noopener" class="footer-link">X</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+      <a href="#/about" class="footer-link">About</a>
+      <a href="#/creator" class="footer-link">Creator</a>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="mono muted">© 2026 t90.club</span>
-    <span class="mono muted">v0.1 · single-file build</span>
   </div>
 </footer>
 
@@ -701,45 +564,114 @@ const calcBySlug = Object.fromEntries(allCalcs.map(c => [c.slug, c]));
 
 // ---------- HUB RENDER ----------
 function renderHub() {
-  const root = document.getElementById('calc-hub-cats');
-  root.innerHTML = CATALOG.map(cat => `
-    <section class="cat-section">
-      <div class="container">
-        <header class="cat-head">
-          <div><h2>${cat.name}</h2><p class="muted">${cat.blurb}</p></div>
-          <span class="mono muted">${cat.calcs.length} tools</span>
-        </header>
-        <ul class="calc-grid" role="list">
-          ${cat.calcs.map(c => `
-            <li class="calc-card" data-name="${c.name.toLowerCase()}" data-desc="${c.desc.toLowerCase()}">
-              <a href="#/calculators/${c.slug}" class="calc-link ${c.status==='soon'?'is-soon':''}">
-                <div class="calc-top">
-                  <h3>${c.name}</h3>
-                  <span class="status ${c.status}">${c.status==='live'?'Live':'Soon'}</span>
-                </div>
-                <p>${c.desc}</p>
-                <span class="calc-arrow">${c.status==='live'?'Open →':'Preview →'}</span>
-              </a>
-            </li>`).join('')}
-        </ul>
+  const nav = document.getElementById('dash-nav');
+
+  // Build sidebar
+  nav.innerHTML = CATALOG.map((cat, ci) => `
+    <div class="dash-cat" data-cat="${ci}">
+      <button class="dash-cat-btn" data-cat-toggle="${ci}">
+        <span class="dash-cat-icon">▸</span>
+        <span>${cat.name}</span>
+        <span class="dash-cat-count mono">${cat.calcs.length}</span>
+      </button>
+      <div class="dash-cat-items" data-cat-items="${ci}">
+        ${cat.calcs.map(c => `
+          <button class="dash-item ${c.status}" data-slug="${c.slug}">
+            <span class="dash-item-name">${c.name}</span>
+            <span class="dash-item-status ${c.status}">${c.status === 'live' ? '●' : '○'}</span>
+          </button>
+        `).join('')}
       </div>
-    </section>
+    </div>
   `).join('');
 
-  const q = document.getElementById('q'), count = document.getElementById('count');
-  const cards = Array.from(document.querySelectorAll('.calc-card'));
-  const total = cards.length;
-  q.addEventListener('input', () => {
-    const term = q.value.trim().toLowerCase();
-    let shown = 0;
-    cards.forEach(card => {
-      const hay = (card.dataset.name||'') + ' ' + (card.dataset.desc||'');
-      const match = !term || hay.includes(term);
-      card.style.display = match ? '' : 'none';
-      if (match) shown++;
+  // Category toggle
+  nav.querySelectorAll('.dash-cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ci = btn.dataset.catToggle;
+      const items = nav.querySelector(`[data-cat-items="${ci}"]`);
+      const icon = btn.querySelector('.dash-cat-icon');
+      const isOpen = items.classList.toggle('is-open');
+      icon.textContent = isOpen ? '▾' : '▸';
     });
-    count.textContent = term ? `${shown} of ${total} tools` : `${total} tools`;
   });
+
+  // Auto-open first category
+  const firstItems = nav.querySelector('[data-cat-items="0"]');
+  if (firstItems) {
+    firstItems.classList.add('is-open');
+    nav.querySelector('[data-cat-toggle="0"] .dash-cat-icon').textContent = '▾';
+  }
+
+  // Calculator item click → show panel
+  nav.querySelectorAll('.dash-item').forEach(item => {
+    item.addEventListener('click', () => {
+      showPanel(item.dataset.slug);
+    });
+  });
+}
+
+function showPanel(slug) {
+  const nav = document.getElementById('dash-nav');
+  const panels = document.querySelectorAll('.dash-panel');
+
+  // Update sidebar active state
+  nav.querySelectorAll('.dash-item').forEach(i => i.classList.remove('is-active'));
+  if (slug) {
+    const active = nav.querySelector(`[data-slug="${slug}"]`);
+    if (active) active.classList.add('is-active');
+  }
+
+  // Show the right panel
+  panels.forEach(p => p.classList.remove('is-active'));
+
+  if (!slug) {
+    document.querySelector('[data-calc="welcome"]').classList.add('is-active');
+    return;
+  }
+
+  const calc = calcBySlug[slug];
+  if (!calc) return;
+
+  // Check if there's a built panel for this calc
+  const panel = document.querySelector(`[data-calc="${slug}"]`);
+  if (panel) {
+    panel.classList.add('is-active');
+    // Re-run the calc function to initialize values
+    wireCalc(slug);
+    return;
+  }
+
+  // No panel = soon calc. Show empty state panel
+  const emptyPanel = document.querySelector('[data-calc="empty"]');
+  emptyPanel.classList.add('is-active');
+  document.getElementById('empty-detail').innerHTML = `
+    <div class="dash-detail-head">
+      <div>
+        <span class="mono muted">${calc.category}</span>
+        <h2>${calc.name}</h2>
+        <p class="muted" style="margin:var(--s-2) 0 0">${calc.desc}</p>
+      </div>
+    </div>
+    <div style="margin-top:var(--s-6)">
+      <div class="dash-empty">
+        <div class="dash-empty-icon">🔧</div>
+        <h3>Building soon</h3>
+        <p class="muted">This calculator is in the build queue. The formula and chart are being dialled in — it'll land here once ready.</p>
+      </div>
+    </div>`;
+}
+
+function wireCalc(slug) {
+  if(window.lucide) lucide.createIcons();
+  switch(slug) {
+    case 'daily-fuel': dfCalc(); break;
+    case 'during-workout-carbs': dwCalc(); break;
+    case 'race-predictor': rpCalc(); break;
+    case 'vdot-paces': vdCalc(); break;
+    case 'ftp-zones': fzCalc(); break;
+    case 'w-per-kg': wpCalc(); break;
+  }
 }
 
 // ---------- ROUTER ----------
@@ -753,21 +685,33 @@ function navigate() {
     a.classList.toggle('active', hash === r || (r !== '/' && hash.startsWith(r)));
   });
 
-  // Stub handling: any /calculators/<slug> for non-live → use stub page
-  if (hash.startsWith('/calculators/')) {
-    const slug = hash.split('/')[2];
-    const calc = calcBySlug[slug];
-    if (!calc) {
-      document.querySelector('[data-page="/404"]').classList.add('is-active');
-      window.scrollTo(0,0); return;
+  // All /calculators* routes show the dashboard
+  if (hash === '/calculators' || hash.startsWith('/calculators/')) {
+    document.querySelector('[data-page="/calculators"]').classList.add('is-active');
+
+    if (hash === '/calculators') {
+      showPanel(null); // welcome state
+    } else {
+      const slug = hash.split('/')[2];
+      const calc = calcBySlug[slug];
+      if (calc) {
+        showPanel(slug);
+        // Expand the right sidebar category
+        const catIdx = CATALOG.findIndex(c => c.calcs.some(x => x.slug === slug));
+        if (catIdx >= 0) {
+          const items = document.querySelector(`[data-cat-items="${catIdx}"]`);
+          const icon = document.querySelector(`[data-cat-toggle="${catIdx}"] .dash-cat-icon`);
+          if (items && !items.classList.contains('is-open')) {
+            items.classList.add('is-open');
+            if (icon) icon.textContent = '▾';
+          }
+        }
+      } else {
+        document.querySelector('[data-page="/404"]').classList.add('is-active');
+      }
     }
-    if (calc.status === 'soon') {
-      document.getElementById('stub-cat').textContent = calc.category;
-      document.getElementById('stub-name').textContent = calc.name;
-      document.getElementById('stub-desc').textContent = calc.desc;
-      document.querySelector('[data-page="/calculators/_stub"]').classList.add('is-active');
-      window.scrollTo(0,0); return;
-    }
+    window.scrollTo(0,0);
+    return;
   }
 
   const page = document.querySelector(`[data-page="${hash}"]`);
@@ -1155,8 +1099,8 @@ function wire(){
   navigate();
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
-else wire();
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { wire(); if(window.lucide) lucide.createIcons(); });
+else { wire(); setTimeout(() => { if(window.lucide) lucide.createIcons(); }, 100); }
 </script>
 
 </body>
