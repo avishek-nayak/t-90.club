@@ -922,7 +922,75 @@ a   { color: inherit; }
   display: block;
 }
 
-/* ─── HEAT GRID ─── */
+/* ─── MICRO DONUT GRID ─── */
+.micro-donut-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 12px;
+  margin-top: 12px;
+}
+
+.micro-donut-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.micro-donut {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.5s ease;
+}
+
+.micro-donut::after {
+  content: '';
+  position: absolute;
+  inset: 13px;
+  background: var(--card-bg);
+  border-radius: 50%;
+}
+
+.micro-donut-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  gap: 1px;
+}
+
+.micro-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.micro-unit {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--disabled);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.micro-name {
+  font-size: 11px;
+  color: var(--disabled);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ─── HEAT GRID (kept for legacy, hidden) ─── */
 .heat-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -988,111 +1056,95 @@ a   { color: inherit; }
 }
 
 @media (max-width: 760px) {
-  /* HEADER */
-  .app-header {
-    grid-template-columns: auto 1fr auto;
-    gap: 12px;
-  }
-  .hamburger {
-    display: flex;
-    justify-self: end;
-  }
+  /* ── HEADER ── */
+  .app-header { grid-template-columns: auto 1fr auto; gap: 12px; }
+  .hamburger  { display: flex; justify-self: end; }
   .nav {
     display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+    top: 100%; left: 0; right: 0;
+    z-index: 200;
     background: var(--bg);
     border-bottom: 1px solid var(--rule);
     flex-direction: column;
     align-items: stretch;
-    justify-content: flex-start;
     gap: 0;
     padding: 4px var(--gutter) 12px;
     box-shadow: 0 12px 24px rgba(61, 43, 61, 0.06);
   }
   .nav.open { display: flex; }
-  .nav-link {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--rule);
-    font-size: 13px;
-    opacity: 0.85;
-  }
+  .nav-link { padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 13px; opacity: 0.85; }
   .nav-link:last-child { border-bottom: none; }
   .nav-link::after { display: none; }
 
-  /* MAIN LAYOUT */
+  /* ── MAIN: containing block for both panels ── */
   body { overflow: hidden; }
   .app-main {
+    position: relative;
     grid-template-columns: 1fr;
     height: calc(100vh - 65px);
     min-height: 0;
     overflow: hidden;
-    position: relative;
   }
 
-  /* OUTPUT PANEL: horizontal swipe carousel */
+  /* ── OUTPUT PANEL: vertical scroll, leaves 60px for collapsed sheet ── */
   .output-panel {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: calc(100% - 60px);
     display: flex;
-    flex-direction: row;
-    gap: 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
+    flex-direction: column;
+    gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding: 14px 14px 76px;
-    height: 100%;
+    padding: 20px 12px 24px;
     align-items: stretch;
   }
   .output-panel::-webkit-scrollbar { display: none; }
 
   .card {
-    flex: 0 0 calc(100vw - 40px);
-    scroll-snap-align: center;
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    flex: none;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    scroll-snap-align: unset;
     animation: none;
+    scrollbar-width: none;
   }
-  .card::-webkit-scrollbar { display: none; }
-  .card { scrollbar-width: none; }
-
-  .card-value.large  { font-size: 48px; }
-  .mini-grid         { grid-template-columns: repeat(2, 1fr); }
+  .card.span-2 { grid-column: unset; }
+  .mini-grid { grid-template-columns: repeat(2, 1fr); }
   .mini-stat:nth-child(2) { border-right: none; }
-  .donut-wrap        { flex-direction: column; align-items: center; gap: 18px; }
-  .heat-grid         { grid-template-columns: 1fr; }
+  .donut-wrap { flex-direction: column; align-items: center; gap: 18px; }
+  .micro-donut-grid { grid-template-columns: repeat(3, 1fr); }
 
-  /* INPUT PANEL: bottom sheet */
+  /* ── INPUT PANEL: absolute bottom sheet — no fixed, no transform ── */
   .input-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
     z-index: 50;
+    height: 60px;
+    overflow: hidden;
     background: var(--bg);
     border-right: none;
     border-top: 1px solid var(--rule-strong);
     border-radius: 18px 18px 0 0;
     padding: 0;
-    transform: translateY(calc(100% - 56px));
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 -14px 40px rgba(61, 43, 61, 0.10);
-    max-height: 86vh;
+    transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -10px 30px rgba(61, 43, 61, 0.08);
     display: flex;
     flex-direction: column;
   }
-  .input-panel.expanded {
-    transform: translateY(0);
-  }
+  .input-panel.expanded { height: 86vh; }
 
   .sheet-handle {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px 12px;
+    height: 60px;
+    padding: 0 24px;
     cursor: pointer;
     user-select: none;
     background: var(--bg);
@@ -1106,11 +1158,9 @@ a   { color: inherit; }
   .sheet-handle::before {
     content: '';
     position: absolute;
-    top: 6px;
-    left: 50%;
+    top: 6px; left: 50%;
     transform: translateX(-50%);
-    width: 38px;
-    height: 4px;
+    width: 38px; height: 4px;
     border-radius: 2px;
     background: var(--rule-strong);
   }
@@ -1121,19 +1171,9 @@ a   { color: inherit; }
     color: var(--text);
     font-weight: 600;
   }
-  .sheet-chevron {
-    display: flex;
-    align-items: center;
-    color: var(--orange);
-  }
-  .sheet-chevron svg {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.35s ease;
-  }
-  .input-panel.expanded .sheet-chevron svg {
-    transform: rotate(180deg);
-  }
+  .sheet-chevron { display: flex; align-items: center; color: var(--orange); }
+  .sheet-chevron svg { width: 18px; height: 18px; transition: transform 0.35s ease; }
+  .input-panel.expanded .sheet-chevron svg { transform: rotate(180deg); }
 
   .panel-body {
     overflow-y: auto;
@@ -1142,13 +1182,8 @@ a   { color: inherit; }
     flex: 1;
     min-height: 0;
   }
-  .panel-headline {
-    margin-top: 4px;
-    margin-bottom: 22px;
-    font-size: 24px;
-  }
-}
-</style>
+  .panel-headline { margin-top: 4px; margin-bottom: 22px; font-size: 24px; }
+}</style>
 </head>
 <body>
 
@@ -1181,10 +1216,6 @@ a   { color: inherit; }
 
     <!-- Race countdown card -->
     <div class="race-countdown-card" id="raceCard">
-      <div class="race-countdown-label">
-        <i data-lucide="flag" class="race-label-icon"></i>
-        Race countdown
-      </div>
       <div class="race-countdown-body">
         <div class="race-stepper-wrap">
           <div class="stepper race-stepper">
@@ -1194,11 +1225,6 @@ a   { color: inherit; }
           </div>
           <span class="race-unit">days to race</span>
         </div>
-        <label class="toggle-row race-toggle">
-          <input type="checkbox" id="noRace" class="toggle-cb">
-          <span class="toggle-box"><i data-lucide="check"></i></span>
-          <span class="toggle-text">I am not racing currently</span>
-        </label>
       </div>
     </div>
 
@@ -1449,6 +1475,7 @@ a   { color: inherit; }
       </button>
     </div>
 
+    <!-- Macros + Micronutrients side by side -->
     <div class="card">
       <div class="card-label">
         <span>Macros breakdown</span>
@@ -1467,9 +1494,55 @@ a   { color: inherit; }
           <div class="legend-item"><div class="legend-dot" style="background:#B85C5C"></div><span class="legend-label">Fat</span><span class="legend-value"><span id="mac-f">71</span> g</span></div>
         </div>
       </div>
-      <div class="card-sub" id="macro-note">Higher carb ratio for endurance training. Adjust within ±10g daily based on hunger and energy.</div>
+      <div class="card-sub" id="macro-note">Higher carb ratio for endurance training.</div>
     </div>
 
+    <div class="card">
+      <div class="card-label">
+        <span>Micronutrients</span>
+        <span class="badge badge-info">DAILY</span>
+      </div>
+      <div class="micro-donut-grid">
+        <div class="micro-donut-item">
+          <div class="micro-donut" id="donut-iron" style="background:conic-gradient(#B85C5C 216deg, rgba(61,43,61,0.1) 216deg 360deg)">
+            <div class="micro-donut-inner"><span class="micro-val" id="val-iron">18</span><span class="micro-unit">mg</span></div>
+          </div>
+          <div class="micro-name">Iron</div>
+        </div>
+        <div class="micro-donut-item">
+          <div class="micro-donut" id="donut-na" style="background:conic-gradient(#5E8B7E 270deg, rgba(61,43,61,0.1) 270deg 360deg)">
+            <div class="micro-donut-inner"><span class="micro-val" id="val-na">3.5k</span><span class="micro-unit">mg</span></div>
+          </div>
+          <div class="micro-name">Sodium</div>
+        </div>
+        <div class="micro-donut-item">
+          <div class="micro-donut" id="donut-ca" style="background:conic-gradient(#9E7BA0 234deg, rgba(61,43,61,0.1) 234deg 360deg)">
+            <div class="micro-donut-inner"><span class="micro-val" id="val-ca">1.2k</span><span class="micro-unit">mg</span></div>
+          </div>
+          <div class="micro-name">Calcium</div>
+        </div>
+        <div class="micro-donut-item">
+          <div class="micro-donut" id="donut-mg" style="background:conic-gradient(#6A8E5E 198deg, rgba(61,43,61,0.1) 198deg 360deg)">
+            <div class="micro-donut-inner"><span class="micro-val" id="val-mg">450</span><span class="micro-unit">mg</span></div>
+          </div>
+          <div class="micro-name">Magnesium</div>
+        </div>
+        <div class="micro-donut-item">
+          <div class="micro-donut" id="donut-k" style="background:conic-gradient(#D4A24C 288deg, rgba(61,43,61,0.1) 288deg 360deg)">
+            <div class="micro-donut-inner"><span class="micro-val" id="val-k">4k</span><span class="micro-unit">mg</span></div>
+          </div>
+          <div class="micro-name">Potassium</div>
+        </div>
+        <div class="micro-donut-item">
+          <div class="micro-donut" id="donut-vd" style="background:conic-gradient(#FA4B13 252deg, rgba(61,43,61,0.1) 252deg 360deg)">
+            <div class="micro-donut-inner"><span class="micro-val" id="val-vd">2k</span><span class="micro-unit">IU</span></div>
+          </div>
+          <div class="micro-name">Vitamin D</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hydration -->
     <div class="card">
       <div class="card-label"><span>Hydration plan</span><span class="badge badge-info">DAILY</span></div>
       <div class="card-row">
@@ -1484,6 +1557,7 @@ a   { color: inherit; }
       <div class="card-sub" style="margin-top:12px">During training, drink <span id="hyd-rate" class="text-mono text-accent">600 ml/hour</span>, with <span id="hyd-na" class="text-mono">500 mg</span> sodium per liter when above 1 hour.</div>
     </div>
 
+    <!-- Workout fueling -->
     <div class="card">
       <div class="card-label"><span>Workout fueling</span><span class="badge badge-warn">TIMING</span></div>
       <div class="zone-grid">
@@ -1506,23 +1580,11 @@ a   { color: inherit; }
       <div class="card-sub">Pre workout carbs scale with session length. During workout intake matters above 75 min.</div>
     </div>
 
-    <div class="card">
+    <!-- Race week strategy (span-2) -->
+    <div class="card span-2">
       <div class="card-label"><span>Race week strategy</span><span class="badge" id="race-badge">PLANNING</span></div>
       <div id="race-content">
         <div class="card-sub" style="margin-top:0">Enter race days in the input panel to see your taper carb load schedule.</div>
-      </div>
-    </div>
-
-    <div class="card span-2">
-      <div class="card-label"><span>Micronutrient targets</span><span class="badge badge-info">DAILY</span></div>
-      <div class="card-sub" style="margin-bottom:8px">Endurance athletes need 20 to 50 percent more of these than sedentary adults. Bars show your daily target.</div>
-      <div class="heat-grid">
-        <div class="heat-row"><label>Iron</label><div class="heat-bar"><div class="heat-fill" id="bar-iron" style="width:60%;background:linear-gradient(90deg,#B85C5C,#D4A24C)"></div></div><div class="heat-value"><span id="val-iron">18</span> mg</div></div>
-        <div class="heat-row"><label>Sodium</label><div class="heat-bar"><div class="heat-fill" id="bar-na" style="width:75%;background:linear-gradient(90deg,#5E8B7E,#6A8E5E)"></div></div><div class="heat-value"><span id="val-na">3,500</span> mg</div></div>
-        <div class="heat-row"><label>Calcium</label><div class="heat-bar"><div class="heat-fill" id="bar-ca" style="width:65%;background:linear-gradient(90deg,#9E7BA0,#B85C5C)"></div></div><div class="heat-value"><span id="val-ca">1,200</span> mg</div></div>
-        <div class="heat-row"><label>Magnesium</label><div class="heat-bar"><div class="heat-fill" id="bar-mg" style="width:55%;background:linear-gradient(90deg,#6A8E5E,#5E8B7E)"></div></div><div class="heat-value"><span id="val-mg">450</span> mg</div></div>
-        <div class="heat-row"><label>Potassium</label><div class="heat-bar"><div class="heat-fill" id="bar-k" style="width:80%;background:linear-gradient(90deg,#D4A24C,#C77A1F)"></div></div><div class="heat-value"><span id="val-k">4,000</span> mg</div></div>
-        <div class="heat-row"><label>Vitamin D</label><div class="heat-bar"><div class="heat-fill" id="bar-vd" style="width:70%;background:linear-gradient(90deg,#FA4B13,#D4A24C)"></div></div><div class="heat-value"><span id="val-vd">2,000</span> IU</div></div>
       </div>
     </div>
 
@@ -1634,7 +1696,7 @@ function compute() {
   const goal    = $('goal').value;
   const diet    = $('diet').value;
   const climate = $('climate').value;
-  const raceDays = ($('noRace').checked || $('raceDays').value === '') ? null : +$('raceDays').value;
+  const raceDays = $('raceDays').value === '' ? null : +$('raceDays').value;
 
   // BMR
   let bmr;
@@ -1893,18 +1955,26 @@ function compute() {
   const potassium = (sex==='male'?3400:2600)*1.15;
 
   $('val-iron').textContent = fmt(iron,0);
-  $('val-na').textContent   = fmt(sodium,0);
-  $('val-ca').textContent   = fmt(calcium,0);
+  $('val-na').textContent   = iron >= 1000 ? (sodium/1000).toFixed(1)+'k' : fmt(sodium,0);
+  $('val-ca').textContent   = (calcium/1000).toFixed(1)+'k';
   $('val-mg').textContent   = fmt(magnesium,0);
-  $('val-k').textContent    = fmt(potassium,0);
-  $('val-vd').textContent   = fmt(2000,0);
+  $('val-k').textContent    = (potassium/1000).toFixed(1)+'k';
+  $('val-vd').textContent   = '2k';
 
-  $('bar-iron').style.width = Math.min(iron/30*100,100)+'%';
-  $('bar-na').style.width   = Math.min(sodium/6000*100,100)+'%';
-  $('bar-ca').style.width   = Math.min(calcium/1500*100,100)+'%';
-  $('bar-mg').style.width   = Math.min(magnesium/600*100,100)+'%';
-  $('bar-k').style.width    = Math.min(potassium/5000*100,100)+'%';
-  $('bar-vd').style.width   = '70%';
+  // Fix sodium label (always compact)
+  $('val-na').textContent = sodium >= 1000 ? (sodium/1000).toFixed(1)+'k' : fmt(sodium,0);
+
+  function setMicroDonut(id, pct, color) {
+    const deg = Math.min(Math.max(pct, 0), 100) / 100 * 360;
+    $(id).style.background = `conic-gradient(${color} ${deg}deg, rgba(61,43,61,0.1) ${deg}deg 360deg)`;
+  }
+
+  setMicroDonut('donut-iron', Math.min(iron/30*100, 100),        '#B85C5C');
+  setMicroDonut('donut-na',   Math.min(sodium/6000*100, 100),    '#5E8B7E');
+  setMicroDonut('donut-ca',   Math.min(calcium/1500*100, 100),   '#9E7BA0');
+  setMicroDonut('donut-mg',   Math.min(magnesium/600*100, 100),  '#6A8E5E');
+  setMicroDonut('donut-k',    Math.min(potassium/5000*100, 100), '#D4A24C');
+  setMicroDonut('donut-vd',   70,                                '#FA4B13');
 }
 
 // ─── Disable-section checkboxes ───
@@ -1918,12 +1988,6 @@ function bindToggle(cbId, sectionId) {
 }
 bindToggle('noRun',   'run-section');
 bindToggle('noCycle', 'cycle-section');
-
-// ─── noRace dims the race countdown card ───
-$('noRace').addEventListener('change', () => {
-  document.getElementById('raceCard').classList.toggle('is-disabled', $('noRace').checked);
-  compute();
-});
 
 document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', compute));
 compute();
