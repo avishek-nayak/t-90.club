@@ -62,12 +62,7 @@ input,select,button,textarea{font-family:inherit}
 
 /* HOME HERO */
 
-
-
-
 .lede{font-size:14px;color:var(--ink-2);max-width:640px;margin-top:var(--s-5)}
-
-
 
 /* CALCULATOR HUB */
 .page-head{padding:var(--s-9) 0 var(--s-7);border-bottom:1px solid var(--line)}
@@ -229,7 +224,6 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
 .dash-empty h3{margin-bottom:var(--s-3)}
 .dash-empty p{max-width:400px}
 
-
 /* HOME PAGE — Figma-matched */
 
 /* Hero */
@@ -260,17 +254,7 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
 .hp-section-center .hp-section-body{padding:80px 48px}
 @media (max-width:768px){.hp-section-body{padding:60px 16px!important}.hp-section{flex-direction:column}}
 
-/* Tags — vertical on left or right edge */
-.hp-tag-col{display:flex;flex-direction:column;align-items:center;width:80px;flex-shrink:0;position:relative}
-.hp-tag-left{border-right:1px solid var(--accent)}
-.hp-tag-right{border-left:1px solid var(--accent)}
-.hp-tag{font-family:var(--font-sans);font-style:normal;font-weight:500;font-size:13px;color:var(--accent);writing-mode:vertical-lr;text-orientation:mixed;transform:rotate(180deg);border:1px solid var(--accent);padding:16px 8px;letter-spacing:.08em;white-space:nowrap;position:sticky;top:80px}
-.hp-tag-line-v{flex:1;width:1px;background:var(--accent);opacity:.3}
-.hp-tag-line-h{flex:1;height:1px;background:var(--accent);opacity:.3;position:absolute;top:50%;left:100%;width:calc(100vw - 80px)}
-.hp-tag-top-h{align-items:flex-start;padding-top:20px;width:auto;flex-direction:row;gap:0;border-right:none;border-bottom:none;position:absolute;left:0;top:0}
-.hp-tag-top-h .hp-tag{writing-mode:horizontal-tb;transform:none;position:static}
-.hp-tag-top-h .hp-tag-line-h{position:static;width:100vw}
-@media (max-width:768px){.hp-tag-col{display:none}}
+@media (max-width:768px){}
 
 /* Section content alignment */
 .hp-align-left{text-align:left}
@@ -307,11 +291,6 @@ input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;b
   .hp-footer-inner{flex-direction:column;gap:40px}
   .hp-footer-card{min-width:auto;max-width:100%}
 }
-
-
-.squiggly-line{width:40%;height:auto;display:block}
-.squiggly-right{margin-left:auto}
-.squiggly-left{margin-right:auto}
 
 /* MICRO-INTERACTIONS */
 .hp-hero-btn,.hp-card,.btn,.home-sect-btn,.feat-btn,.footer-link{transition:all 200ms cubic-bezier(.4,0,.2,1)}
